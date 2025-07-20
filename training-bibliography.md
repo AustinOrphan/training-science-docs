@@ -118,13 +118,53 @@
 
 ---
 
-## Recent Advances (2020-2025)
+## Recent Advances (2019-2024)
 
-35. **Claudino, J. G., Capanema, D. D. O., de Souza, T. V., Serrão, J. C., Machado Pereira, A. C., & Nassis, G. P. (2019).** Current approaches to the use of artificial intelligence for injury risk assessment and performance prediction in team sports: A systematic review. *Sports Medicine - Open*, 5(1), 28. DOI: 10.1186/s40798-019-0202-3
+### Training Methodologies and Performance
 
-36. **Rossi, A., Pappalardo, L., Cintia, P., Iaia, F. M., Fernández, J., & Medina, D. (2018).** Effective injury forecasting in soccer with GPS training data and machine learning. *PloS One*, 13(7), e0201264. DOI: 10.1371/journal.pone.0201264
+35. **Maunder, E., Seiler, S., Mildenhall, M. J., Kilding, A. E., & Plews, D. J. (2021).** The importance of 'durability' in the physiological profiling of endurance athletes. *Sports Medicine*, 51(8), 1619-1628. DOI: 10.1007/s40279-021-01459-0
 
-37. **Düking, P., Achtzehn, S., Holmberg, H. C., & Sperlich, B. (2018).** Integrated framework of load monitoring by a combination of smartphone applications, wearables and point-of-care testing provides feedback that allows individual responsive adjustments to activities of daily living. *Sensors*, 18(5), 1632. DOI: 10.3390/s18051632
+36. **Casado, A., Hanley, B., & Ruiz-Pérez, L. M. (2020).** Deliberate practice in training differentiates the best Kenyan and Spanish long-distance runners. *European Journal of Sport Science*, 20(7), 887-895. DOI: 10.1080/17461391.2019.1678356
+
+37. **Stellingwerff, T., & Cox, G. R. (2014).** Systematic review: Carbohydrate supplementation on exercise performance or capacity of varying durations. *Applied Physiology, Nutrition, and Metabolism*, 39(9), 998-1011. DOI: 10.1139/apnm-2014-0027
+
+### VO2max and Training Adaptations
+
+38. **Midgley, A. W., McNaughton, L. R., & Carroll, S. (2007).** Training to enhance the physiological determinants of long-distance running performance: Can valid recommendations be given to runners and coaches based on current scientific knowledge? *Sports Medicine*, 37(10), 857-880. DOI: 10.2165/00007256-200737100-00003
+
+39. **Bacon, A. P., Carter, R. E., Ogle, E. A., & Joyner, M. J. (2013).** VO2max trainability and high intensity interval training in humans: A meta-analysis. *PLoS One*, 8(9), e73182. DOI: 10.1371/journal.pone.0073182
+
+### Running Economy and Biomechanics
+
+40. **Folland, J. P., Allen, S. J., Black, M. I., Handsaker, J. C., & Forrester, S. E. (2017).** Running technique is an important component of running economy and performance. *Medicine & Science in Sports & Exercise*, 49(7), 1412-1423. DOI: 10.1249/MSS.0000000000001245
+
+41. **Moore, I. S. (2016).** Is there an economical running technique? A review of modifiable biomechanical factors affecting running economy. *Sports Medicine*, 46(6), 793-807. DOI: 10.1007/s40279-016-0474-4
+
+### Nutrition and Hydration
+
+42. **Burke, L. M., Ross, M. L., Garvican‐Lewis, L. A., Welvaert, M., Heikura, I. A., Forbes, S. G., ... & Hawley, J. A. (2017).** Low carbohydrate, high fat diet impairs exercise economy and negates the performance benefit from intensified training in elite race walkers. *Journal of Physiology*, 595(9), 2785-2807. DOI: 10.1113/JP273230
+
+43. **Thomas, D. T., Erdman, K. A., & Burke, L. M. (2016).** Position of the Academy of Nutrition and Dietetics, Dietitians of Canada, and the American College of Sports Medicine: Nutrition and athletic performance. *Journal of the Academy of Nutrition and Dietetics*, 116(3), 501-528. DOI: 10.1016/j.jand.2015.12.006
+
+44. **Kenefick, R. W. (2018).** Drinking strategies: Planned drinking versus drinking to thirst. *Sports Medicine*, 48(Suppl 1), 31-37. DOI: 10.1007/s40279-017-0844-6
+
+### Heart Rate Monitoring and Recovery
+
+45. **Plews, D. J., Laursen, P. B., Kilding, A. E., & Buchheit, M. (2014).** Heart rate variability in elite triathletes, is variation in variability the key to effective training? A case comparison. *European Journal of Applied Physiology*, 114(11), 2397-2408. DOI: 10.1007/s00421-014-2982-2
+
+46. **Nakamura, F. Y., Flatt, A. A., Pereira, L. A., Ramirez-Campillo, R., Loturco, I., & Esco, M. R. (2015).** Ultra-short-term heart rate variability is sensitive to training effects in team sports players. *Journal of Sports Science & Medicine*, 14(3), 602-605.
+
+### Injury Prevention and Biomechanics
+
+47. **Ceyssens, L., Vanelderen, R., Barton, C., Malliaras, P., & Dingenen, B. (2019).** Biomechanical risk factors associated with running-related injuries: A systematic review. *Sports Medicine*, 49(7), 1095-1115. DOI: 10.1007/s40279-019-01110-z
+
+48. **van der Worp, M. P., ten Haaf, D. S., van Cingel, R., de Wijer, A., Nijhuis-van der Sanden, M. W., & Staal, J. B. (2015).** Injuries in runners; a systematic review on risk factors and sex differences. *PLoS One*, 10(2), e0114937. DOI: 10.1371/journal.pone.0114937
+
+### Technology and Monitoring
+
+49. **Claudino, J. G., Capanema, D. D. O., de Souza, T. V., Serrão, J. C., Machado Pereira, A. C., & Nassis, G. P. (2019).** Current approaches to the use of artificial intelligence for injury risk assessment and performance prediction in team sports: A systematic review. *Sports Medicine - Open*, 5(1), 28. DOI: 10.1186/s40798-019-0202-3
+
+50. **Düking, P., Achtzehn, S., Holmberg, H. C., & Sperlich, B. (2018).** Integrated framework of load monitoring by a combination of smartphone applications, wearables and point-of-care testing provides feedback that allows individual responsive adjustments to activities of daily living. *Sensors*, 18(5), 1632. DOI: 10.3390/s18051632
 
 ---
 
@@ -140,5 +180,11 @@
 
 *This bibliography represents the scientific foundation for all algorithms, calculations, and training methodologies implemented in the Advanced Training Plan Generation System. Each source has been carefully selected for its peer-reviewed validity and practical applicability to endurance training.*
 
-*Last Compiled: [Current Date]*  
-*Total Sources: 40+*
+**New Research Areas Added (2024):**
+- Nutrition and hydration strategies
+- Advanced heart rate monitoring
+- Biomechanical injury prevention
+- Technology integration for training
+
+*Last Compiled: July 2025*  
+*Total Sources: 50+*

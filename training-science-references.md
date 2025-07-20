@@ -197,5 +197,35 @@ All calculations and methodologies in our Advanced Training Plan Generation Syst
 
 ---
 
-*Last Updated: [Current Date]*
-*Note: This is a living document and will be updated as new research becomes available.*
+## Nutrition and Hydration
+
+### Carbohydrate and Fat Metabolism
+- **Burke, L. M., et al. (2017).** "Low carbohydrate, high fat diet impairs exercise economy and negates the performance benefit from intensified training in elite race walkers." *Journal of Physiology*, 595(9), 2785-2807.
+- **Thomas, D. T., Erdman, K. A., & Burke, L. M. (2016).** "Position of the Academy of Nutrition and Dietetics, Dietitians of Canada, and the American College of Sports Medicine: Nutrition and athletic performance." *Journal of the Academy of Nutrition and Dietetics*, 116(3), 501-528.
+
+### Hydration Strategies
+- **Kenefick, R. W. (2018).** "Drinking strategies: Planned drinking versus drinking to thirst." *Sports Medicine*, 48(Suppl 1), 31-37.
+
+---
+
+## Advanced Monitoring and Technology
+
+### Heart Rate Variability
+- **Plews, D. J., et al. (2014).** "Heart rate variability in elite triathletes, is variation in variability the key to effective training? A case comparison." *European Journal of Applied Physiology*, 114(11), 2397-2408.
+- **Nakamura, F. Y., et al. (2015).** "Ultra-short-term heart rate variability is sensitive to training effects in team sports players." *Journal of Sports Science & Medicine*, 14(3), 602-605.
+
+### Wearable Technology Integration
+- **Düking, P., et al. (2018).** "Integrated framework of load monitoring by a combination of smartphone applications, wearables and point-of-care testing provides feedback that allows individual responsive adjustments to activities of daily living." *Sensors*, 18(5), 1632.
+
+---
+
+## Enhanced Injury Prevention
+
+### Biomechanical Risk Factors
+- **Ceyssens, L., et al. (2019).** "Biomechanical risk factors associated with running-related injuries: A systematic review." *Sports Medicine*, 49(7), 1095-1115.
+- **van der Worp, M. P., et al. (2015).** "Injuries in runners; a systematic review on risk factors and sex differences." *PLoS One*, 10(2), e0114937.
+
+---
+
+*Last Updated: July 2025*
+*Note: This is a living document updated with latest research on nutrition, technology integration, and injury prevention.*

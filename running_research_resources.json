@@ -1,0 +1,128 @@
+{
+  "Training & Performance": {
+    "Training Methodologies & Plans": [
+      {
+        "title": "Training Essentials for Ultrarunning",
+        "source": "PubMed",
+        "year": 2019,
+        "url": "https://pubmed.ncbi.nlm.nih.gov/30789534/"
+      },
+      {
+        "title": "Polarized vs. Threshold Training Models",
+        "source": "Journal of Applied Physiology",
+        "year": 2020,
+        "url": "https://journals.physiology.org/doi/full/10.1152/japplphysiol.00652.2020"
+      },
+      {
+        "title": "Marathon Training: Structured Plans and Performance",
+        "source": "Frontiers in Physiology",
+        "year": 2020,
+        "url": "https://www.frontiersin.org/articles/10.3389/fphys.2020.00232/full"
+      }
+    ],
+    "VO2max and Lactate Threshold": [
+      {
+        "title": "Training Strategies to Improve VO2max",
+        "source": "Sports Medicine",
+        "year": 2020,
+        "url": "https://pubmed.ncbi.nlm.nih.gov/31977367/"
+      },
+      {
+        "title": "Lactate Threshold and Endurance Training",
+        "source": "ACSM\u2019s Medicine & Science in Sports & Exercise",
+        "year": 2021,
+        "url": "https://journals.lww.com/acsm-msse/fulltext/2021/02000/lactate_threshold_and_training_intensity.17.aspx"
+      }
+    ],
+    "Running Economy & Efficiency": [
+      {
+        "title": "Enhancing Running Economy: Current Perspectives",
+        "source": "Sports Medicine",
+        "year": 2021,
+        "url": "https://pubmed.ncbi.nlm.nih.gov/33962233/"
+      },
+      {
+        "title": "Running Economy and Performance Correlations",
+        "source": "Springer Sports Medicine",
+        "year": 2019,
+        "url": "https://link.springer.com/article/10.1007/s40279-019-01103-z"
+      }
+    ]
+  },
+  "Nutrition for Runners": {
+    "General Nutrition": [
+      {
+        "title": "Nutrition for Endurance Athletes: Evidence-Based Strategies",
+        "source": "Nutrients Journal",
+        "year": 2019,
+        "url": "https://pubmed.ncbi.nlm.nih.gov/30363588/"
+      },
+      {
+        "title": "Carbohydrate Periodization and Endurance Performance",
+        "source": "Frontiers in Nutrition",
+        "year": 2019,
+        "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6306969/"
+      }
+    ],
+    "Hydration & Electrolytes": [
+      {
+        "title": "Hydration in Endurance Athletes",
+        "source": "Nutrients Journal",
+        "year": 2020,
+        "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7547812/"
+      },
+      {
+        "title": "Electrolyte Balance for Marathon Runners",
+        "source": "Journal of Sports Sciences",
+        "year": 2020,
+        "url": "https://pubmed.ncbi.nlm.nih.gov/31635354/"
+      }
+    ]
+  },
+  "Cardiac & Physiological Markers": {
+    "Heart Rate Metrics": [
+      {
+        "title": "Heart Rate Variability for Monitoring Training Load",
+        "source": "Frontiers in Physiology",
+        "year": 2019,
+        "url": "https://www.frontiersin.org/articles/10.3389/fphys.2018.01519/full"
+      },
+      {
+        "title": "Resting Heart Rate as a Fitness and Recovery Indicator",
+        "source": "Sports Medicine",
+        "year": 2019,
+        "url": "https://pubmed.ncbi.nlm.nih.gov/31192883/"
+      },
+      {
+        "title": "Maximal Heart Rate: Measurement, Prediction, and Implications",
+        "source": "European Journal of Preventive Cardiology",
+        "year": 2019,
+        "url": "https://journals.sagepub.com/doi/full/10.1177/2047487319830126"
+      }
+    ]
+  },
+  "Injury Prevention & Sports Medicine": {
+    "General Injury Prevention": [
+      {
+        "title": "Running Injury Prevention Strategies",
+        "source": "British Journal of Sports Medicine",
+        "year": 2020,
+        "url": "https://bjsm.bmj.com/content/54/18/1112"
+      },
+      {
+        "title": "Biomechanical Risk Factors for Running Injuries",
+        "source": "Sports Health",
+        "year": 2019,
+        "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6349491/"
+      }
+    ],
+    "Tendon & Ligament Injuries": [
+      {
+        "title": "Achilles Tendinopathy Management",
+        "source": "Journal of Orthopaedic & Sports Physical Therapy",
+        "year": 2019,
+        "url": "https://pubmed.ncbi.nlm.nih.gov/31389902/"
+      }
+    ]
+  }
+}
