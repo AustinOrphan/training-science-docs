@@ -52,6 +52,11 @@ Comprehensive scientific documentation and references for advanced running train
 
 ## Usage
 
+### 📖 Online Documentation Viewer
+**[View Documentation Online](https://austinorphan.github.io/training-science-docs/)**
+
+Interactive documentation browser with search, navigation, and syntax highlighting.
+
 ### As NPM Package
 ```bash
 npm install @yourusername/training-science-docs
@@ -59,7 +64,7 @@ npm install @yourusername/training-science-docs
 
 ### As Git Submodule
 ```bash
-git submodule add https://github.com/yourusername/training-science-docs.git docs/science
+git submodule add https://github.com/AustinOrphan/training-science-docs.git docs/science
 ```
 
 ### Direct Reference

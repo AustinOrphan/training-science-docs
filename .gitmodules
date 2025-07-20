@@ -1,0 +1,3 @@
+[submodule "viewer"]
+	path = viewer
+	url = https://github.com/AustinOrphan/markdown-docs-viewer.git
