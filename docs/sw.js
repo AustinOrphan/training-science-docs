@@ -1,47 +1,84 @@
 // Service Worker for Training Science Documentation
 // Simple implementation to handle caching and prevent fetch errors
 
-const CACHE_NAME = 'training-science-docs-v1';
-const urlsToCache = [
-  '/',
-  '/index.html',
-  'https://cdn.jsdelivr.net/npm/marked@12.0.0/marked.min.js',
-  'https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/index.min.js',
-  'https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.min.css'
-];
+const CACHE_NAME = 'training-science-docs-v2';
 
-// Install event - cache resources
+// Install event - skip caching problematic URLs
 self.addEventListener('install', function(event) {
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(function(cache) {
-        console.log('Opened cache');
-        return cache.addAll(urlsToCache.map(url => 
-          url.startsWith('http') ? url : new URL(url, self.location.origin).href
-        ));
-      })
-      .catch(function(error) {
-        console.log('Cache install failed:', error);
-      })
-  );
+  console.log('Service Worker installing');
+  // Skip the waiting phase and activate immediately
+  self.skipWaiting();
 });
 
-// Fetch event - serve from cache, fallback to network
+// Fetch event - serve from cache, fallback to network with proper error handling
 self.addEventListener('fetch', function(event) {
+  // Only handle same-origin requests to avoid CORS issues
+  if (!event.request.url.startsWith(self.location.origin)) {
+    return;
+  }
+  
   event.respondWith(
     caches.match(event.request)
       .then(function(response) {
-        // Return cached version or fetch from network
+        // Return cached version if available
         if (response) {
           return response;
         }
         
-        return fetch(event.request).catch(function(error) {
-          console.log('Fetch failed:', error);
-          // Return a basic error response instead of failing
-          return new Response('Network error occurred', {
-            status: 408,
-            statusText: 'Request Timeout'
+        // Try to fetch from network
+        return fetch(event.request.clone())
+          .then(function(response) {
+            // Don't cache non-successful responses
+            if (!response || response.status !== 200 || response.type !== 'basic') {
+              return response;
+            }
+            
+            // Cache successful responses
+            const responseToCache = response.clone();
+            caches.open(CACHE_NAME)
+              .then(function(cache) {
+                cache.put(event.request, responseToCache);
+              })
+              .catch(function(error) {
+                console.log('Cache put failed:', error);
+              });
+            
+            return response;
+          })
+          .catch(function(error) {
+            console.log('Fetch failed for:', event.request.url, error);
+            
+            // Return a simple offline page for navigation requests
+            if (event.request.mode === 'navigate') {
+              return new Response(`
+                <!DOCTYPE html>
+                <html>
+                  <head><title>Offline</title></head>
+                  <body>
+                    <h1>You are offline</h1>
+                    <p>Please check your internet connection and try again.</p>
+                  </body>
+                </html>
+              `, {
+                headers: { 'Content-Type': 'text/html' }
+              });
+            }
+            
+            // For other requests, return a basic error response
+            return new Response('Network error occurred', {
+              status: 503,
+              statusText: 'Service Unavailable'
+            });
+          });
+      })
+      .catch(function(error) {
+        console.log('Cache match failed:', error);
+        // If cache fails, try network directly
+        return fetch(event.request).catch(function(fetchError) {
+          console.log('Direct fetch also failed:', fetchError);
+          return new Response('Service unavailable', {
+            status: 503,
+            statusText: 'Service Unavailable'
           });
         });
       })
