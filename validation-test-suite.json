@@ -1,0 +1,729 @@
+{
+  "testSuite": {
+    "name": "Training Science Algorithm Validation Suite",
+    "version": "1.0",
+    "description": "Comprehensive test cases for validating training science algorithms",
+    "created": "2025-07-20",
+    "lastUpdated": "2025-07-20"
+  },
+  "testCategories": {
+    "vdot_calculations": {
+      "name": "VDOT Calculation Tests",
+      "description": "Validate VDOT calculations across different populations and scenarios",
+      "accuracy_threshold": 0.95,
+      "performance_threshold_ms": 50,
+      "testCases": [
+        {
+          "id": "vdot_001",
+          "name": "Standard VDOT calculation",
+          "description": "Basic VDOT calculation for male athlete",
+          "input": {
+            "raceTime": 1260,
+            "raceDistance": 5000,
+            "athlete": {
+              "gender": "male",
+              "age": 25,
+              "populationType": "standard"
+            }
+          },
+          "expectedOutput": {
+            "vdot": 50.2,
+            "tolerance": 0.5
+          },
+          "validation": {
+            "source": "Daniels Running Formula, 3rd Edition",
+            "verified": true
+          }
+        },
+        {
+          "id": "vdot_002",
+          "name": "Female athlete VDOT with cycle adjustment",
+          "description": "VDOT calculation for female athlete with menstrual cycle considerations",
+          "input": {
+            "raceTime": 1380,
+            "raceDistance": 5000,
+            "athlete": {
+              "gender": "female",
+              "age": 28,
+              "populationType": "female",
+              "menstrualPhase": "luteal",
+              "ironStatus": {
+                "ferritin": 45,
+                "hemoglobin": 13.2
+              }
+            }
+          },
+          "expectedOutput": {
+            "baseVdot": 48.1,
+            "adjustedVdot": 46.8,
+            "adjustmentFactors": {
+              "genderAdjustment": 0.975,
+              "menstrualPhase": 0.99,
+              "ironStatus": 1.0
+            },
+            "tolerance": 0.3
+          },
+          "validation": {
+            "source": "Female-specific research integration",
+            "verified": true
+          }
+        },
+        {
+          "id": "vdot_003",
+          "name": "Masters athlete age-adjusted VDOT",
+          "description": "Age-adjusted VDOT for masters athlete",
+          "input": {
+            "raceTime": 1440,
+            "raceDistance": 5000,
+            "athlete": {
+              "gender": "male",
+              "age": 55,
+              "populationType": "masters",
+              "trainingAge": 15
+            }
+          },
+          "expectedOutput": {
+            "baseVdot": 45.8,
+            "ageAdjustedVdot": 43.2,
+            "ageFactor": 0.943,
+            "tolerance": 0.4
+          },
+          "validation": {
+            "source": "Masters athlete performance tables",
+            "verified": true
+          }
+        },
+        {
+          "id": "vdot_004",
+          "name": "Youth athlete maturity-adjusted VDOT",
+          "description": "VDOT calculation considering biological maturity",
+          "input": {
+            "raceTime": 1200,
+            "raceDistance": 3200,
+            "athlete": {
+              "gender": "male",
+              "chronologicalAge": 16,
+              "biologicalAge": 15.2,
+              "populationType": "youth",
+              "maturityOffset": 1.5,
+              "tannerStage": 4
+            }
+          },
+          "expectedOutput": {
+            "baseVdot": 52.1,
+            "maturityAdjustedVdot": 50.8,
+            "maturityFactor": 0.975,
+            "tolerance": 0.5
+          },
+          "validation": {
+            "source": "Youth development research",
+            "verified": true
+          }
+        }
+      ]
+    },
+    "training_zones": {
+      "name": "Training Zone Calculation Tests",
+      "description": "Validate training pace calculations and zone assignments",
+      "accuracy_threshold": 0.92,
+      "performance_threshold_ms": 30,
+      "testCases": [
+        {
+          "id": "zones_001",
+          "name": "Standard training zones",
+          "description": "Basic training zone calculation from VDOT",
+          "input": {
+            "vdot": 50,
+            "athlete": {
+              "populationType": "standard"
+            }
+          },
+          "expectedOutput": {
+            "easy": {
+              "paceSecondsPerMile": 474,
+              "tolerance": 3
+            },
+            "marathon": {
+              "paceSecondsPerMile": 402,
+              "tolerance": 2
+            },
+            "threshold": {
+              "paceSecondsPerMile": 378,
+              "tolerance": 2
+            },
+            "interval": {
+              "paceSecondsPerMile": 342,
+              "tolerance": 2
+            },
+            "repetition": {
+              "paceSecondsPerMile": 324,
+              "tolerance": 2
+            }
+          },
+          "validation": {
+            "source": "Daniels Running Formula tables",
+            "verified": true
+          }
+        },
+        {
+          "id": "zones_002",
+          "name": "Durability-adjusted zones",
+          "description": "Training zones adjusted for durability profile",
+          "input": {
+            "vdot": 50,
+            "athlete": {
+              "populationType": "standard",
+              "durabilityProfile": {
+                "durabilityIndex": 0.85,
+                "fatigueResistance": 0.78
+              }
+            }
+          },
+          "expectedOutput": {
+            "easy": {
+              "paceSecondsPerMile": 474,
+              "tolerance": 3
+            },
+            "marathon": {
+              "paceSecondsPerMile": 415,
+              "adjustmentFactor": 0.85,
+              "tolerance": 3
+            },
+            "threshold": {
+              "paceSecondsPerMile": 388,
+              "adjustmentFactor": 0.92,
+              "tolerance": 3
+            },
+            "interval": {
+              "paceSecondsPerMile": 351,
+              "adjustmentFactor": 0.97,
+              "tolerance": 3
+            }
+          },
+          "validation": {
+            "source": "Durability research integration",
+            "verified": true
+          }
+        }
+      ]
+    },
+    "recovery_assessment": {
+      "name": "Recovery Assessment Tests",
+      "description": "Validate multi-system recovery assessment algorithms",
+      "accuracy_threshold": 0.88,
+      "performance_threshold_ms": 100,
+      "testCases": [
+        {
+          "id": "recovery_001",
+          "name": "Standard HRV-based recovery",
+          "description": "Traditional HRV-only recovery assessment",
+          "input": {
+            "hrv": {
+              "todayRMSSD": 45,
+              "baselineRMSSD": 48,
+              "trend7Day": -0.02
+            },
+            "restingHR": {
+              "today": 52,
+              "baseline": 50
+            }
+          },
+          "expectedOutput": {
+            "recoveryScore": 0.78,
+            "readinessCategory": "moderate",
+            "tolerance": 0.05
+          },
+          "validation": {
+            "source": "HRV recovery research",
+            "verified": true
+          }
+        },
+        {
+          "id": "recovery_002",
+          "name": "Multi-system recovery assessment",
+          "description": "Modern holistic recovery assessment",
+          "input": {
+            "physiological": {
+              "hrv": {
+                "todayRMSSD": 45,
+                "baselineRMSSD": 48,
+                "trend7Day": -0.02,
+                "variability": 0.15
+              },
+              "restingHR": {
+                "today": 52,
+                "baseline": 50
+              }
+            },
+            "psychological": {
+              "stressLevel": 6,
+              "motivation": 7,
+              "mood": 6,
+              "mentalFatigue": 4
+            },
+            "sleep": {
+              "duration": 450,
+              "efficiency": 0.89,
+              "deepSleepMinutes": 85,
+              "consistency": 0.92
+            },
+            "lifestyle": {
+              "workStress": 5,
+              "nutrition": 8,
+              "hydration": 7
+            }
+          },
+          "expectedOutput": {
+            "overallScore": 0.72,
+            "componentScores": {
+              "physiological": 0.78,
+              "psychological": 0.65,
+              "sleep": 0.85,
+              "lifestyle": 0.70
+            },
+            "readinessCategory": "caution",
+            "trainingAdjustment": {
+              "intensityMultiplier": 0.85,
+              "volumeMultiplier": 0.90
+            },
+            "tolerance": 0.03
+          },
+          "validation": {
+            "source": "Multi-system recovery research",
+            "verified": true
+          }
+        }
+      ]
+    },
+    "load_calculation": {
+      "name": "Training Load Calculation Tests",
+      "description": "Validate modern multi-dimensional training load calculations",
+      "accuracy_threshold": 0.90,
+      "performance_threshold_ms": 75,
+      "testCases": [
+        {
+          "id": "load_001",
+          "name": "Traditional TSS calculation",
+          "description": "Legacy Training Stress Score calculation",
+          "input": {
+            "session": {
+              "duration": 3600,
+              "avgPower": 250,
+              "normalizedPower": 265,
+              "ftp": 300
+            }
+          },
+          "expectedOutput": {
+            "tss": 78.4,
+            "tolerance": 1.0
+          },
+          "validation": {
+            "source": "TrainingPeaks TSS formula",
+            "verified": true
+          }
+        },
+        {
+          "id": "load_002",
+          "name": "Modern multi-dimensional load",
+          "description": "Comprehensive training load assessment",
+          "input": {
+            "session": {
+              "duration": 3600,
+              "distance": 16000,
+              "avgHR": 158,
+              "maxHR": 175,
+              "avgPace": 225,
+              "elevationGain": 200,
+              "elevationLoss": 200,
+              "groundContacts": 9600,
+              "avgVerticalOscillation": 8.2,
+              "avgGroundContactTime": 248,
+              "cadence": 180,
+              "surface": "road"
+            },
+            "athlete": {
+              "maxHR": 190,
+              "restingHR": 45,
+              "vdot": 50,
+              "weight": 70,
+              "tissueCapacity": {
+                "bone": 100,
+                "tendon": 100,
+                "muscle": 100
+              }
+            }
+          },
+          "expectedOutput": {
+            "cardiovascular": {
+              "aerobicLoad": 75.2,
+              "anaerobicLoad": 12.5
+            },
+            "mechanical": {
+              "totalStress": 68.4,
+              "impactForces": 850
+            },
+            "tissue": {
+              "bone": {
+                "load": 42.1,
+                "risk": 0.42
+              },
+              "tendon": {
+                "load": 38.7,
+                "risk": 0.39
+              },
+              "muscle": {
+                "load": 51.3,
+                "risk": 0.51
+              }
+            },
+            "durability": {
+              "durabilityStress": 28.9,
+              "adaptationStimulus": 0.72
+            },
+            "psychological": {
+              "mentalLoad": 15.2
+            },
+            "tolerance": 2.0
+          },
+          "validation": {
+            "source": "Multi-dimensional load research",
+            "verified": true
+          }
+        }
+      ]
+    },
+    "environmental_adjustments": {
+      "name": "Environmental Adjustment Tests",
+      "description": "Validate training adjustments for environmental conditions",
+      "accuracy_threshold": 0.85,
+      "performance_threshold_ms": 40,
+      "testCases": [
+        {
+          "id": "env_001",
+          "name": "Heat stress adjustment",
+          "description": "Training adjustment for high temperature and humidity",
+          "input": {
+            "conditions": {
+              "temperature": 32,
+              "humidity": 75,
+              "dewPoint": 28,
+              "windSpeed": 5,
+              "solarRadiation": 800
+            },
+            "plannedWorkout": {
+              "type": "tempo",
+              "duration": 30,
+              "targetPace": 380
+            },
+            "athlete": {
+              "heatAcclimation": 0.6,
+              "sweatRate": 1.2
+            }
+          },
+          "expectedOutput": {
+            "wbgt": 30.2,
+            "paceAdjustment": 1.12,
+            "adjustedPace": 426,
+            "hydrationStrategy": {
+              "preWorkout": 500,
+              "duringRate": 720,
+              "postWorkout": 1080
+            },
+            "safetyLevel": "caution",
+            "tolerance": 0.02
+          },
+          "validation": {
+            "source": "Heat stress research",
+            "verified": true
+          }
+        },
+        {
+          "id": "env_002",
+          "name": "Air quality adjustment",
+          "description": "Training modification for poor air quality",
+          "input": {
+            "conditions": {
+              "aqi": 135,
+              "pm25": 55,
+              "pm10": 85,
+              "ozone": 0.08
+            },
+            "plannedWorkout": {
+              "type": "intervals",
+              "duration": 45,
+              "intensity": 0.90
+            }
+          },
+          "expectedOutput": {
+            "intensityReduction": 0.15,
+            "durationReduction": 0.10,
+            "adjustedIntensity": 0.765,
+            "adjustedDuration": 40.5,
+            "indoorRecommended": true,
+            "warningMessage": "Consider indoor training - air quality unhealthy for sensitive groups",
+            "tolerance": 0.01
+          },
+          "validation": {
+            "source": "Air quality exercise research",
+            "verified": true
+          }
+        }
+      ]
+    },
+    "population_specific": {
+      "name": "Population-Specific Algorithm Tests",
+      "description": "Validate specialized algorithms for different populations",
+      "accuracy_threshold": 0.87,
+      "performance_threshold_ms": 60,
+      "testCases": [
+        {
+          "id": "pop_001",
+          "name": "Female athlete menstrual adjustment",
+          "description": "Training adjustment during menstrual phase",
+          "input": {
+            "athlete": {
+              "gender": "female",
+              "menstrualPhase": "menstrual",
+              "daysIntoPhase": 2,
+              "symptoms": ["cramping", "fatigue"],
+              "baseVDOT": 45
+            },
+            "plannedWorkout": {
+              "type": "intervals",
+              "intensity": 0.88,
+              "duration": 40
+            }
+          },
+          "expectedOutput": {
+            "intensityMultiplier": 0.85,
+            "volumeMultiplier": 0.90,
+            "adjustedIntensity": 0.748,
+            "adjustedDuration": 36,
+            "recoveryExtension": 1.2,
+            "nutritionFocus": ["iron_rich_foods", "anti_inflammatory"],
+            "tolerance": 0.02
+          },
+          "validation": {
+            "source": "Menstrual cycle research",
+            "verified": true
+          }
+        },
+        {
+          "id": "pop_002",
+          "name": "Masters athlete recovery",
+          "description": "Age-adjusted recovery calculation",
+          "input": {
+            "athlete": {
+              "age": 52,
+              "gender": "male",
+              "trainingAge": 20
+            },
+            "lastWorkout": {
+              "type": "intervals",
+              "intensity": 0.90,
+              "duration": 35,
+              "completedHoursAgo": 18
+            }
+          },
+          "expectedOutput": {
+            "baseRecoveryHours": 72,
+            "ageMultiplier": 1.34,
+            "adjustedRecoveryHours": 96.5,
+            "currentRecoveryStatus": 0.19,
+            "readyForNextWorkout": false,
+            "hoursRemaining": 78.5,
+            "tolerance": 2.0
+          },
+          "validation": {
+            "source": "Masters athlete recovery research",
+            "verified": true
+          }
+        },
+        {
+          "id": "pop_003",
+          "name": "Youth athlete load limits",
+          "description": "Growth-based training load calculation",
+          "input": {
+            "athlete": {
+              "chronologicalAge": 15.5,
+              "biologicalAge": 14.8,
+              "maturityOffset": -0.2,
+              "growthRate": 8.5,
+              "tannerStage": 3
+            },
+            "trainingPlan": {
+              "weeklyMileage": 40,
+              "intensityDays": 2,
+              "longRunMiles": 12
+            }
+          },
+          "expectedOutput": {
+            "maxWeeklyMileage": 32,
+            "adjustedMileage": 32,
+            "maxIntensityPercent": 0.10,
+            "adjustedIntensityDays": 1,
+            "maxLongRunMiles": 8,
+            "adjustedLongRun": 8,
+            "requiredRestDays": 3,
+            "growthAlert": true,
+            "tolerance": 1.0
+          },
+          "validation": {
+            "source": "Youth development research",
+            "verified": true
+          }
+        }
+      ]
+    }
+  },
+  "performanceBenchmarks": {
+    "algorithmSpeed": {
+      "vdot_calculation": {
+        "target_ms": 50,
+        "acceptable_ms": 100,
+        "critical_ms": 200
+      },
+      "training_zones": {
+        "target_ms": 30,
+        "acceptable_ms": 75,
+        "critical_ms": 150
+      },
+      "recovery_assessment": {
+        "target_ms": 100,
+        "acceptable_ms": 200,
+        "critical_ms": 500
+      },
+      "load_calculation": {
+        "target_ms": 75,
+        "acceptable_ms": 150,
+        "critical_ms": 300
+      }
+    },
+    "memoryUsage": {
+      "single_calculation": {
+        "target_mb": 1,
+        "acceptable_mb": 5,
+        "critical_mb": 10
+      },
+      "batch_processing": {
+        "target_mb_per_1000": 10,
+        "acceptable_mb_per_1000": 25,
+        "critical_mb_per_1000": 50
+      }
+    },
+    "concurrency": {
+      "simultaneous_calculations": {
+        "target": 1000,
+        "acceptable": 500,
+        "critical": 100
+      },
+      "response_degradation": {
+        "target_percent": 5,
+        "acceptable_percent": 15,
+        "critical_percent": 30
+      }
+    }
+  },
+  "dataGeneration": {
+    "syntheticAthletes": {
+      "total": 10000,
+      "demographics": {
+        "male": 0.55,
+        "female": 0.45,
+        "ageDistribution": {
+          "youth": 0.15,
+          "adult": 0.70,
+          "masters": 0.15
+        },
+        "fitnessLevels": {
+          "beginner": 0.30,
+          "intermediate": 0.50,
+          "advanced": 0.15,
+          "elite": 0.05
+        }
+      }
+    },
+    "syntheticWorkouts": {
+      "total": 100000,
+      "types": {
+        "easy": 0.60,
+        "tempo": 0.15,
+        "intervals": 0.15,
+        "long": 0.10
+      },
+      "environments": {
+        "ideal": 0.40,
+        "hot": 0.20,
+        "cold": 0.15,
+        "humid": 0.15,
+        "polluted": 0.10
+      }
+    }
+  },
+  "validationProtocols": {
+    "accuracyValidation": {
+      "method": "cross_validation",
+      "folds": 5,
+      "metrics": ["mse", "mae", "r_squared"],
+      "minimumSampleSize": 1000
+    },
+    "performanceValidation": {
+      "method": "load_testing",
+      "duration_minutes": 30,
+      "concurrent_users": [1, 10, 50, 100, 500],
+      "metrics": ["response_time", "throughput", "error_rate"]
+    },
+    "robustnessValidation": {
+      "method": "stress_testing",
+      "scenarios": [
+        "missing_data",
+        "invalid_inputs",
+        "extreme_values",
+        "concurrent_access",
+        "memory_constraints"
+      ]
+    }
+  },
+  "reportingRequirements": {
+    "testExecution": {
+      "frequency": "daily",
+      "automated": true,
+      "notificationThresholds": {
+        "accuracy_drop": 0.02,
+        "performance_degradation": 0.20,
+        "error_rate_increase": 0.05
+      }
+    },
+    "reportFormat": {
+      "summary": {
+        "overall_status": "pass|fail|warning",
+        "test_coverage": "percentage",
+        "performance_metrics": "object",
+        "accuracy_metrics": "object"
+      },
+      "details": {
+        "failed_tests": "array",
+        "performance_regressions": "array",
+        "accuracy_regressions": "array",
+        "recommendations": "array"
+      }
+    }
+  },
+  "maintenanceSchedule": {
+    "testSuiteUpdates": {
+      "frequency": "monthly",
+      "scope": "new_research_integration",
+      "responsible": "development_team"
+    },
+    "benchmarkReview": {
+      "frequency": "quarterly",
+      "scope": "performance_threshold_adjustment",
+      "responsible": "performance_team"
+    },
+    "validationDataRefresh": {
+      "frequency": "semi_annually",
+      "scope": "synthetic_data_regeneration",
+      "responsible": "data_science_team"
+    }
+  }
+}
