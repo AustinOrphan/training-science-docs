@@ -13,7 +13,9 @@ self.addEventListener('install', function(event) {
 // Fetch event - serve from cache, fallback to network with proper error handling
 self.addEventListener('fetch', function(event) {
   // Only handle same-origin requests to avoid CORS issues
-  if (!event.request.url.startsWith(self.location.origin)) {
+  // Also skip GitHub raw content requests
+  if (!event.request.url.startsWith(self.location.origin) || 
+      event.request.url.includes('raw.githubusercontent.com')) {
     return;
   }
   
