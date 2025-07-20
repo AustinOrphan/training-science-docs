@@ -395,8 +395,36 @@
                     docCache[docId] = markdown;
                 }
 
-                const html = marked.parse(markdown);
-                content.innerHTML = html;
+                let html;
+                
+                // Check if it's a JSON file
+                if (doc.file.endsWith('.json')) {
+                    try {
+                        // Parse and pretty-print JSON
+                        const jsonData = JSON.parse(markdown);
+                        html = `<pre><code class="language-json">${JSON.stringify(jsonData, null, 2)}</code></pre>`;
+                        
+                        // Apply syntax highlighting
+                        content.innerHTML = html;
+                        content.querySelectorAll('pre code').forEach((block) => {
+                            hljs.highlightElement(block);
+                        });
+                    } catch (jsonError) {
+                        console.error('Error parsing JSON:', jsonError);
+                        html = `<pre>${markdown}</pre>`;
+                        content.innerHTML = html;
+                    }
+                } else {
+                    // Parse as markdown
+                    html = marked.parse(markdown);
+                    content.innerHTML = html;
+                    
+                    // Apply syntax highlighting to code blocks
+                    content.querySelectorAll('pre code').forEach((block) => {
+                        hljs.highlightElement(block);
+                    });
+                }
+                
                 currentDoc = doc;
 
                 // Scroll to top
