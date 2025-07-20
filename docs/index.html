@@ -4,134 +4,310 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Training Science Documentation</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.min.css">
     <style>
         body {
             margin: 0;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
         }
-        #docs {
+        .container {
+            display: flex;
             height: 100vh;
+        }
+        .sidebar {
+            width: 300px;
+            background: #f6f8fa;
+            border-right: 1px solid #d0d7de;
+            overflow-y: auto;
+        }
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 2rem;
+        }
+        .nav-header {
+            padding: 1rem;
+            background: #2563eb;
+            color: white;
+            font-weight: bold;
+        }
+        .nav-item {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            border-bottom: 1px solid #e1e8ed;
+        }
+        .nav-item:hover {
+            background: #e1e8ed;
+        }
+        .nav-item.active {
+            background: #dbeafe;
+            border-left: 3px solid #2563eb;
+        }
+        .category {
+            padding: 0.5rem 1rem;
+            font-weight: bold;
+            background: #e6e9ef;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         .loading {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            font-size: 18px;
+            padding: 2rem;
+            text-align: center;
             color: #666;
+        }
+        .error {
+            padding: 2rem;
+            text-align: center;
+            color: #dc3545;
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            border-radius: 4px;
+            margin: 1rem;
+        }
+        .search {
+            padding: 1rem;
+            border-bottom: 1px solid #d0d7de;
+        }
+        .search input {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #d0d7de;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        pre {
+            background: #f6f8fa;
+            padding: 1rem;
+            border-radius: 6px;
+            overflow-x: auto;
+        }
+        code {
+            background: #f6f8fa;
+            padding: 0.2em 0.4em;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+        }
+        blockquote {
+            border-left: 4px solid #d0d7de;
+            margin: 0;
+            padding-left: 1rem;
+            color: #656d76;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 1rem 0;
+        }
+        th, td {
+            border: 1px solid #d0d7de;
+            padding: 0.5rem;
+            text-align: left;
+        }
+        th {
+            background: #f6f8fa;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
-    <div id="docs">
-        <div class="loading">Loading Training Science Documentation...</div>
+    <div class="container">
+        <div class="sidebar">
+            <div class="nav-header">Training Science Docs</div>
+            <div class="search">
+                <input type="text" id="searchInput" placeholder="Search documentation...">
+            </div>
+            <div id="navigation">
+                <div class="loading">Loading navigation...</div>
+            </div>
+        </div>
+        <div class="content">
+            <div id="content">
+                <div class="loading">Loading content...</div>
+            </div>
+        </div>
     </div>
-    
-    <!-- CDN Dependencies -->
+
     <script src="https://cdn.jsdelivr.net/npm/marked@12.0.0/marked.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/index.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.min.css">
-    
-    <!-- Our viewer -->
-    <script src="./dist/index.umd.js"></script>
     
     <script>
-        // Wait for dependencies to load
-        window.addEventListener('load', function() {
-            const { createViewer } = window.MarkdownDocsViewer;
-            
-            // Fetch markdown content directly from GitHub raw URLs
-            const baseUrl = 'https://raw.githubusercontent.com/AustinOrphan/training-science-docs/main/';
-            
-            const viewer = createViewer({
-                container: '#docs',
-                title: 'Training Science Documentation',
-                source: {
-                    type: 'url',
-                    baseUrl: baseUrl,
-                    documents: [
-                        {
-                            id: 'overview',
-                            title: 'Project Overview',
-                            file: 'README.md',
-                            category: 'Introduction',
-                            description: 'Project overview and usage instructions',
-                            order: 1
-                        },
-                        {
-                            id: 'whitepaper',
-                            title: 'Training System Whitepaper',
-                            file: 'training-system-whitepaper.md',
-                            category: 'Core Documents',
-                            description: 'Academic-style overview of the complete system',
-                            order: 1
-                        },
-                        {
-                            id: 'references',
-                            title: 'Scientific References',
-                            file: 'training-science-references.md',
-                            category: 'Core Documents',
-                            description: 'Organized research sources by topic',
-                            order: 2
-                        },
-                        {
-                            id: 'implementation',
-                            title: 'Implementation Guide',
-                            file: 'training-implementation-guide.md',
-                            category: 'Core Documents',
-                            description: 'Science-to-code mapping and technical details',
-                            order: 3
-                        },
-                        {
-                            id: 'calculations',
-                            title: 'Calculations Reference',
-                            file: 'training-calculations-reference.md',
-                            category: 'Core Documents',
-                            description: 'Developer-friendly formulas and algorithms',
-                            order: 4
-                        },
-                        {
-                            id: 'bibliography',
-                            title: 'Complete Bibliography',
-                            file: 'training-bibliography.md',
-                            category: 'Core Documents',
-                            description: 'Full list of 40+ sources and citations',
-                            order: 5
-                        }
-                    ]
-                },
-                navigation: {
-                    showCategories: true,
-                    collapsible: true,
-                    showDescription: true,
-                    sortBy: 'order'
-                },
-                search: {
-                    enabled: true,
-                    placeholder: 'Search training science docs...',
-                    searchInTags: true,
-                    maxResults: 10
-                },
-                render: {
-                    syntaxHighlighting: true,
-                    highlightTheme: 'github',
-                    copyCodeButton: true,
-                    linkTarget: '_blank'
-                },
-                theme: {
-                    name: 'training-science',
-                    colors: {
-                        primary: '#2563eb',
-                        background: '#ffffff',
-                        text: '#1f2937'
-                    }
-                },
-                onError: function(error) {
-                    console.error('Viewer error:', error);
-                    document.getElementById('docs').innerHTML = 
-                        '<div class="loading">Error loading documentation. Please try refreshing the page.</div>';
+        const docs = [
+            {
+                id: 'overview',
+                title: 'Project Overview',
+                file: 'README.md',
+                category: 'Introduction',
+                description: 'Project overview and usage instructions',
+                order: 1
+            },
+            {
+                id: 'whitepaper',
+                title: 'Training System Whitepaper',
+                file: 'training-system-whitepaper.md',
+                category: 'Core Documents',
+                description: 'Academic-style overview of the complete system',
+                order: 1
+            },
+            {
+                id: 'references',
+                title: 'Scientific References',
+                file: 'training-science-references.md',
+                category: 'Core Documents',
+                description: 'Organized research sources by topic',
+                order: 2
+            },
+            {
+                id: 'implementation',
+                title: 'Implementation Guide',
+                file: 'training-implementation-guide.md',
+                category: 'Core Documents',
+                description: 'Science-to-code mapping and technical details',
+                order: 3
+            },
+            {
+                id: 'calculations',
+                title: 'Calculations Reference',
+                file: 'training-calculations-reference.md',
+                category: 'Core Documents',
+                description: 'Developer-friendly formulas and algorithms',
+                order: 4
+            },
+            {
+                id: 'bibliography',
+                title: 'Complete Bibliography',
+                file: 'training-bibliography.md',
+                category: 'Core Documents',
+                description: 'Full list of 40+ sources and citations',
+                order: 5
+            }
+        ];
+
+        const baseUrl = 'https://raw.githubusercontent.com/AustinOrphan/training-science-docs/main/';
+        let currentDoc = null;
+        let docCache = {};
+
+        // Configure marked with syntax highlighting
+        marked.setOptions({
+            highlight: function(code, lang) {
+                if (lang && hljs.getLanguage(lang)) {
+                    try {
+                        return hljs.highlight(code, { language: lang }).value;
+                    } catch (err) {}
                 }
+                return hljs.highlightAuto(code).value;
+            }
+        });
+
+        function renderNavigation() {
+            const nav = document.getElementById('navigation');
+            const categories = {};
+            
+            docs.forEach(doc => {
+                if (!categories[doc.category]) {
+                    categories[doc.category] = [];
+                }
+                categories[doc.category].push(doc);
             });
+
+            let html = '';
+            Object.keys(categories).forEach(category => {
+                html += `<div class="category">${category}</div>`;
+                categories[category]
+                    .sort((a, b) => a.order - b.order)
+                    .forEach(doc => {
+                        html += `
+                            <div class="nav-item" data-id="${doc.id}">
+                                <div style="font-weight: 500;">${doc.title}</div>
+                                <div style="font-size: 0.8em; color: #666; margin-top: 0.25rem;">
+                                    ${doc.description}
+                                </div>
+                            </div>
+                        `;
+                    });
+            });
+
+            nav.innerHTML = html;
+
+            // Add click handlers
+            nav.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    const docId = item.dataset.id;
+                    loadDocument(docId);
+                });
+            });
+        }
+
+        async function loadDocument(docId) {
+            const doc = docs.find(d => d.id === docId);
+            if (!doc) return;
+
+            // Update active state
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            document.querySelector(`[data-id="${docId}"]`).classList.add('active');
+
+            const content = document.getElementById('content');
+            content.innerHTML = '<div class="loading">Loading document...</div>';
+
+            try {
+                let markdown;
+                if (docCache[docId]) {
+                    markdown = docCache[docId];
+                } else {
+                    const response = await fetch(`${baseUrl}${doc.file}`);
+                    if (!response.ok) throw new Error(`Failed to load ${doc.file}`);
+                    markdown = await response.text();
+                    docCache[docId] = markdown;
+                }
+
+                const html = marked.parse(markdown);
+                content.innerHTML = html;
+                currentDoc = doc;
+
+                // Scroll to top
+                content.scrollTop = 0;
+            } catch (error) {
+                console.error('Error loading document:', error);
+                content.innerHTML = `
+                    <div class="error">
+                        <h3>Error Loading Document</h3>
+                        <p>Failed to load ${doc.title}. Please try refreshing the page.</p>
+                        <details>
+                            <summary>Error Details</summary>
+                            <pre>${error.message}</pre>
+                        </details>
+                    </div>
+                `;
+            }
+        }
+
+        function setupSearch() {
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('input', (e) => {
+                const query = e.target.value.toLowerCase();
+                document.querySelectorAll('.nav-item').forEach(item => {
+                    const text = item.textContent.toLowerCase();
+                    item.style.display = text.includes(query) ? 'block' : 'none';
+                });
+            });
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            renderNavigation();
+            setupSearch();
+            
+            // Load first document
+            if (docs.length > 0) {
+                loadDocument(docs[0].id);
+            }
         });
     </script>
 </body>
