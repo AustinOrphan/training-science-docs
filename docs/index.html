@@ -134,7 +134,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/marked@12.0.0/marked.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/index.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/highlight.min.js"></script>
     
     <script>
         const docs = [
@@ -321,16 +321,23 @@
         let docCache = {};
 
         // Configure marked with syntax highlighting
-        marked.setOptions({
-            highlight: function(code, lang) {
-                if (lang && hljs.getLanguage(lang)) {
-                    try {
-                        return hljs.highlight(code, { language: lang }).value;
-                    } catch (err) {}
+        if (typeof marked !== 'undefined') {
+            marked.setOptions({
+                highlight: function(code, lang) {
+                    if (typeof hljs !== 'undefined') {
+                        if (lang && hljs.getLanguage(lang)) {
+                            try {
+                                return hljs.highlight(code, { language: lang }).value;
+                            } catch (err) {
+                                console.warn('Syntax highlighting failed:', err);
+                            }
+                        }
+                        return hljs.highlightAuto(code).value;
+                    }
+                    return code; // Return plain code if hljs not available
                 }
-                return hljs.highlightAuto(code).value;
-            }
-        });
+            });
+        }
 
         function renderNavigation() {
             const nav = document.getElementById('navigation');
@@ -406,9 +413,11 @@
                         
                         // Apply syntax highlighting
                         content.innerHTML = html;
-                        content.querySelectorAll('pre code').forEach((block) => {
-                            hljs.highlightElement(block);
-                        });
+                        if (typeof hljs !== 'undefined' && hljs.highlightElement) {
+                            content.querySelectorAll('pre code').forEach((block) => {
+                                hljs.highlightElement(block);
+                            });
+                        }
                     } catch (jsonError) {
                         console.error('Error parsing JSON:', jsonError);
                         html = `<pre>${markdown}</pre>`;
@@ -420,9 +429,11 @@
                     content.innerHTML = html;
                     
                     // Apply syntax highlighting to code blocks
-                    content.querySelectorAll('pre code').forEach((block) => {
-                        hljs.highlightElement(block);
-                    });
+                    if (typeof hljs !== 'undefined' && hljs.highlightElement) {
+                        content.querySelectorAll('pre code').forEach((block) => {
+                            hljs.highlightElement(block);
+                        });
+                    }
                 }
                 
                 currentDoc = doc;
