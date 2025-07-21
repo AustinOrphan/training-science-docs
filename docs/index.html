@@ -134,9 +134,16 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/marked@12.0.0/marked.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     
     <script>
+        // Debug library loading
+        console.log('marked available:', typeof marked !== 'undefined');
+        console.log('hljs available:', typeof hljs !== 'undefined');
+        if (typeof hljs !== 'undefined') {
+            console.log('hljs.highlightElement available:', typeof hljs.highlightElement === 'function');
+        }
+        
         const docs = [
             {
                 id: 'overview',
@@ -415,8 +422,14 @@
                         content.innerHTML = html;
                         if (typeof hljs !== 'undefined' && hljs.highlightElement) {
                             content.querySelectorAll('pre code').forEach((block) => {
-                                hljs.highlightElement(block);
+                                try {
+                                    hljs.highlightElement(block);
+                                } catch (err) {
+                                    console.warn('Failed to highlight JSON code block:', err);
+                                }
                             });
+                        } else {
+                            console.warn('highlight.js not available for JSON highlighting');
                         }
                     } catch (jsonError) {
                         console.error('Error parsing JSON:', jsonError);
@@ -431,8 +444,14 @@
                     // Apply syntax highlighting to code blocks
                     if (typeof hljs !== 'undefined' && hljs.highlightElement) {
                         content.querySelectorAll('pre code').forEach((block) => {
-                            hljs.highlightElement(block);
+                            try {
+                                hljs.highlightElement(block);
+                            } catch (err) {
+                                console.warn('Failed to highlight markdown code block:', err);
+                            }
                         });
+                    } else {
+                        console.warn('highlight.js not available for markdown highlighting');
                     }
                 }
                 
