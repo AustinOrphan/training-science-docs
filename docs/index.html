@@ -465,6 +465,9 @@
                     } else {
                         console.warn('highlight.js not available for markdown highlighting');
                     }
+                    
+                    // Intercept internal links
+                    interceptInternalLinks();
                 }
                 
                 currentDoc = doc;
@@ -494,6 +497,46 @@
                     const text = item.textContent.toLowerCase();
                     item.style.display = text.includes(query) ? 'block' : 'none';
                 });
+            });
+        }
+        
+        function interceptInternalLinks() {
+            const content = document.getElementById('content');
+            content.querySelectorAll('a').forEach(link => {
+                const href = link.getAttribute('href');
+                if (href && (href.startsWith('./') || href.endsWith('.md'))) {
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        
+                        // Extract the filename from the link
+                        let filename = href.replace('./', '');
+                        
+                        // Handle links with subdirectories
+                        if (filename.includes('/')) {
+                            // For now, just get the full path
+                            // e.g., "collaboration-templates/research-partnership-agreement.md"
+                        }
+                        
+                        // Find the matching document
+                        const matchingDoc = docs.find(d => d.file === filename);
+                        
+                        if (matchingDoc) {
+                            loadDocument(matchingDoc.id);
+                        } else {
+                            console.warn('No matching document found for:', filename);
+                            
+                            // Try without extension
+                            const filenameNoExt = filename.replace('.md', '');
+                            const matchingDocNoExt = docs.find(d => 
+                                d.file.replace('.md', '') === filenameNoExt
+                            );
+                            
+                            if (matchingDocNoExt) {
+                                loadDocument(matchingDocNoExt.id);
+                            }
+                        }
+                    });
+                }
             });
         }
 
