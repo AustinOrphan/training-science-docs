@@ -2,6 +2,8 @@
 
 Comprehensive scientific documentation and references for advanced running training plan generation systems.
 
+> **⚠️ Important**: This documentation was compiled and analyzed with AI assistance. Please review the [AI-Assisted Documentation Disclaimer](./ai-disclaimer.md) for important information about appropriate usage, limitations, and recommended validation steps.
+
 ## Contents
 
 ### Core Documents
