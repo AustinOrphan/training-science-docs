@@ -2,7 +2,7 @@
   "name": "@yourusername/training-science-docs",
   "version": "1.0.0",
   "description": "Scientific documentation and references for advanced running training plans",
-  "main": "index.js",
+  "main": "README.md",
   "files": [
     "*.md",
     "images/",

@@ -137,13 +137,25 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     
     <script>
-        // Debug library loading
-        console.log('marked available:', typeof marked !== 'undefined');
-        console.log('hljs available:', typeof hljs !== 'undefined');
-        if (typeof hljs !== 'undefined') {
-            console.log('hljs.highlightElement available:', typeof hljs.highlightElement === 'function');
+        // Wait for libraries to load
+        function initializeViewer() {
+            console.log('marked available:', typeof marked !== 'undefined');
+            console.log('hljs available:', typeof hljs !== 'undefined');
+            if (typeof hljs !== 'undefined') {
+                console.log('hljs.highlightElement available:', typeof hljs.highlightElement === 'function');
+            }
+            
+            // Initialize the viewer only after libraries are confirmed loaded
+            if (typeof marked === 'undefined') {
+                console.error('marked library failed to load');
+                return;
+            }
+            
+            // Start the viewer initialization
+            startViewer();
         }
         
+        function startViewer() {
         const docs = [
             {
                 id: 'overview',
@@ -508,6 +520,15 @@
                 loadDocument(docs[0].id);
             }
         });
+        
+        } // End startViewer function
+        
+        // Check if libraries are already loaded, otherwise wait
+        if (typeof marked !== 'undefined') {
+            initializeViewer();
+        } else {
+            window.addEventListener('load', initializeViewer);
+        }
     </script>
 </body>
 </html>
