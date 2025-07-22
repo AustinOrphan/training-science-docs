@@ -25,9 +25,9 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
       
-      - name: Update submodules (allow unrelated histories)
+      - name: Update submodules
         run: |
-          git submodule update --remote --merge --allow-unrelated-histories
+          git submodule update --init --recursive
       
       - name: Check for changes
         id: changes
