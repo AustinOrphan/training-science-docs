@@ -13,12 +13,18 @@
             height: 100vh;
         }
     </style>
+    
+    <!-- Dependencies for UMD build -->
+    <script src="https://cdn.jsdelivr.net/npm/marked@14.1.2/lib/marked.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked-highlight@2.1.4/lib/index.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.10.0/lib/highlight.min.js"></script>
 </head>
 <body>
     <div id="docs"></div>
     
-    <script type="module">
-        import { createViewer } from './viewer/dist/index.js';
+    <script src="./viewer/dist/index.umd.cjs"></script>
+    <script>
+        const { createViewer, defaultTheme, darkTheme } = MarkdownDocsViewer;
 
         // Configuration for the training science documentation
         const viewer = createViewer({
@@ -96,13 +102,29 @@
                 copyCodeButton: true,
                 linkTarget: '_blank'
             },
-            theme: {
-                name: 'training-science',
-                colors: {
-                    primary: '#2563eb',
-                    background: '#ffffff',
-                    text: '#1f2937'
-                }
+            // Remove the hardcoded theme and use the default theme
+            theme: defaultTheme,
+            // Add UI configuration to show theme controls
+            ui: {
+                showThemeSwitcher: true,
+                showDarkModeToggle: true,
+                availableThemes: [
+                    { id: 'default', name: 'Light', theme: defaultTheme },
+                    { id: 'dark', name: 'Dark', theme: darkTheme },
+                    {
+                        id: 'training-science',
+                        name: 'Training Science',
+                        theme: {
+                            ...defaultTheme,
+                            name: 'training-science',
+                            colors: {
+                                ...defaultTheme.colors,
+                                primary: '#2563eb',
+                                textPrimary: '#1f2937'
+                            }
+                        }
+                    }
+                ]
             }
         });
     </script>
