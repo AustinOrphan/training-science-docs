@@ -4,534 +4,154 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Training Science Documentation</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.min.css">
     <style>
         body {
             margin: 0;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            line-height: 1.6;
         }
-        .container {
-            display: flex;
+        #docs {
             height: 100vh;
         }
-        .sidebar {
-            width: 300px;
-            background: #f6f8fa;
-            border-right: 1px solid #d0d7de;
-            overflow-y: auto;
-        }
-        .content {
-            flex: 1;
-            overflow-y: auto;
-            padding: 2rem;
-        }
-        .nav-header {
-            padding: 1rem;
-            background: #2563eb;
-            color: white;
-            font-weight: bold;
-        }
-        .nav-item {
-            padding: 0.75rem 1rem;
-            cursor: pointer;
-            border-bottom: 1px solid #e1e8ed;
-        }
-        .nav-item:hover {
-            background: #e1e8ed;
-        }
-        .nav-item.active {
-            background: #dbeafe;
-            border-left: 3px solid #2563eb;
-        }
-        .category {
-            padding: 0.5rem 1rem;
-            font-weight: bold;
-            background: #e6e9ef;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .loading {
-            padding: 2rem;
-            text-align: center;
-            color: #666;
-        }
-        .error {
-            padding: 2rem;
-            text-align: center;
-            color: #dc3545;
-            background: #f8d7da;
-            border: 1px solid #f5c6cb;
-            border-radius: 4px;
-            margin: 1rem;
-        }
-        .search {
-            padding: 1rem;
-            border-bottom: 1px solid #d0d7de;
-        }
-        .search input {
-            width: 100%;
-            padding: 0.5rem;
-            border: 1px solid #d0d7de;
-            border-radius: 4px;
-            font-size: 14px;
-        }
-        pre {
-            background: #f6f8fa;
-            padding: 1rem;
-            border-radius: 6px;
-            overflow-x: auto;
-        }
-        code {
-            background: #f6f8fa;
-            padding: 0.2em 0.4em;
-            border-radius: 3px;
-            font-size: 0.9em;
-        }
-        pre code {
-            background: none;
-            padding: 0;
-        }
-        blockquote {
-            border-left: 4px solid #d0d7de;
-            margin: 0;
-            padding-left: 1rem;
-            color: #656d76;
-        }
-        table {
-            border-collapse: collapse;
-            width: 100%;
-            margin: 1rem 0;
-        }
-        th, td {
-            border: 1px solid #d0d7de;
-            padding: 0.5rem;
-            text-align: left;
-        }
-        th {
-            background: #f6f8fa;
-            font-weight: bold;
-        }
     </style>
+    
+    <!-- Dependencies for UMD build -->
+    <script src="https://cdn.jsdelivr.net/npm/marked@14.1.2/lib/marked.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked-highlight@2.1.4/lib/index.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.10.0/lib/highlight.min.js"></script>
 </head>
 <body>
-    <div class="container">
-        <div class="sidebar">
-            <div class="nav-header">Training Science Docs</div>
-            <div class="search">
-                <input type="text" id="searchInput" placeholder="Search documentation...">
-            </div>
-            <div id="navigation">
-                <div class="loading">Loading navigation...</div>
-            </div>
-        </div>
-        <div class="content">
-            <div id="content">
-                <div class="loading">Loading content...</div>
-            </div>
-        </div>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/marked@12.0.0/marked.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <div id="docs"></div>
     
+    <script src="../viewer/dist/index.umd.cjs"></script>
     <script>
-        // Wait for libraries to load
-        function initializeViewer() {
-            console.log('marked available:', typeof marked !== 'undefined');
-            console.log('hljs available:', typeof hljs !== 'undefined');
-            if (typeof hljs !== 'undefined') {
-                console.log('hljs.highlightElement available:', typeof hljs.highlightElement === 'function');
-            }
-            
-            // Initialize the viewer only after libraries are confirmed loaded
-            if (typeof marked === 'undefined') {
-                console.error('marked library failed to load');
-                return;
-            }
-            
-            // Start the viewer initialization
-            startViewer();
-        }
-        
-        function startViewer() {
-        const docs = [
-            {
-                id: 'overview',
-                title: 'Project Overview',
-                file: 'README.md',
-                category: 'Introduction',
-                description: 'Project overview and usage instructions',
-                order: 1
-            },
-            {
-                id: 'ai-disclaimer',
-                title: 'AI-Assisted Documentation Disclaimer',
-                file: 'ai-disclaimer.md',
-                category: 'Introduction',
-                description: 'Important notice about AI involvement in documentation compilation',
-                order: 2
-            },
-            {
-                id: 'whitepaper',
-                title: 'Training System Whitepaper',
-                file: 'training-system-whitepaper.md',
-                category: 'Core Documents',
-                description: 'Academic-style overview of the complete system',
-                order: 1
-            },
-            {
-                id: 'references',
-                title: 'Scientific References',
-                file: 'training-science-references.md',
-                category: 'Core Documents',
-                description: 'Organized research sources by topic',
-                order: 2
-            },
-            {
-                id: 'implementation',
-                title: 'Implementation Guide',
-                file: 'training-implementation-guide.md',
-                category: 'Core Documents',
-                description: 'Science-to-code mapping and technical details',
-                order: 3
-            },
-            {
-                id: 'calculations',
-                title: 'Calculations Reference',
-                file: 'training-calculations-reference.md',
-                category: 'Core Documents',
-                description: 'Developer-friendly formulas and algorithms',
-                order: 4
-            },
-            {
-                id: 'bibliography',
-                title: 'Complete Bibliography',
-                file: 'training-bibliography.md',
-                category: 'Core Documents',
-                description: 'Full list of 50+ sources and citations',
-                order: 5
-            },
-            {
-                id: 'research-gaps',
-                title: 'Research Gaps Analysis',
-                file: 'research-gaps-analysis.md',
-                category: 'Research Planning',
-                description: 'Comprehensive analysis of 45 research gaps with priorities',
-                order: 1
-            },
-            {
-                id: 'implementation-roadmap',
-                title: 'Implementation Roadmap',
-                file: 'implementation-roadmap.md',
-                category: 'Research Planning',
-                description: 'Detailed technical framework for gap integration',
-                order: 2
-            },
-            {
-                id: 'research-resources',
-                title: 'Additional Research Resources',
-                file: 'running_research_resources.md',
-                category: 'Research Planning',
-                description: 'Extended collection of research sources by topic',
-                order: 3
-            },
-            {
-                id: 'research-evolution',
-                title: 'Research Evolution Analysis',
-                file: 'research-evolution-analysis.md',
-                category: 'Modern Research Analysis',
-                description: 'Comparing classic vs. modern training science (2019-2024)',
-                order: 1
-            },
-            {
-                id: 'algorithm-updates',
-                title: 'Algorithm Update Guide',
-                file: 'algorithm-update-guide.md',
-                category: 'Modern Research Analysis',
-                description: 'Specific code implementations for modernizing algorithms',
-                order: 2
-            },
-            {
-                id: 'api-specifications',
-                title: 'API Documentation',
-                file: 'api-specifications.md',
-                category: 'Developer Resources',
-                description: 'External API integration guide for weather, wearables, and health data',
-                order: 1
-            },
-            {
-                id: 'migration-checklist',
-                title: 'Migration Checklist',
-                file: 'migration-checklist.md',
-                category: 'Developer Resources',
-                description: 'Step-by-step developer implementation guide',
-                order: 2
-            },
-            {
-                id: 'project-roadmap',
-                title: 'Project Implementation Roadmap',
-                file: 'project-roadmap.json',
-                category: 'Internal Documentation',
-                description: 'Detailed 8-phase implementation plan with timelines and budgets',
-                order: 1
-            },
-            {
-                id: 'validation-test-suite',
-                title: 'Validation Test Suite',
-                file: 'validation-test-suite.json',
-                category: 'Internal Documentation',
-                description: 'Comprehensive test cases for algorithm validation',
-                order: 2
-            },
-            {
-                id: 'research-tracker',
-                title: 'Research Update Tracker',
-                file: 'research-tracker.json',
-                category: 'Internal Documentation',
-                description: 'Framework for monitoring and integrating new research',
-                order: 3
-            }
-        ];
+        const { createViewer, defaultTheme, darkTheme } = MarkdownDocsViewer;
 
-        const baseUrl = 'https://raw.githubusercontent.com/AustinOrphan/training-science-docs/main/';
-        let currentDoc = null;
-        let docCache = {};
-
-        // Configure marked with syntax highlighting
-        if (typeof marked !== 'undefined') {
-            marked.setOptions({
-                highlight: function(code, lang) {
-                    if (typeof hljs !== 'undefined') {
-                        if (lang && hljs.getLanguage(lang)) {
-                            try {
-                                return hljs.highlight(code, { language: lang }).value;
-                            } catch (err) {
-                                console.warn('Syntax highlighting failed:', err);
-                            }
-                        }
-                        return hljs.highlightAuto(code).value;
+        // Configuration for the training science documentation
+        const viewer = createViewer({
+            container: '#docs',
+            title: 'Training Science Documentation',
+            source: {
+                type: 'local',
+                basePath: '..',
+                documents: [
+                    {
+                        id: 'overview',
+                        title: 'Project Overview',
+                        file: 'README.md',
+                        category: 'Introduction',
+                        description: 'Project overview and usage instructions',
+                        order: 1
+                    },
+                    {
+                        id: 'whitepaper',
+                        title: 'Training System Whitepaper',
+                        file: 'training-system-whitepaper.md',
+                        category: 'Core Documents',
+                        description: 'Academic-style overview of the complete system',
+                        order: 1
+                    },
+                    {
+                        id: 'references',
+                        title: 'Scientific References',
+                        file: 'training-science-references.md',
+                        category: 'Core Documents',
+                        description: 'Organized research sources by topic',
+                        order: 2
+                    },
+                    {
+                        id: 'implementation',
+                        title: 'Implementation Guide',
+                        file: 'training-implementation-guide.md',
+                        category: 'Core Documents',
+                        description: 'Science-to-code mapping and technical details',
+                        order: 3
+                    },
+                    {
+                        id: 'calculations',
+                        title: 'Calculations Reference',
+                        file: 'training-calculations-reference.md',
+                        category: 'Core Documents',
+                        description: 'Developer-friendly formulas and algorithms',
+                        order: 4
+                    },
+                    {
+                        id: 'bibliography',
+                        title: 'Complete Bibliography',
+                        file: 'training-bibliography.md',
+                        category: 'Core Documents',
+                        description: 'Full list of 40+ sources and citations',
+                        order: 5
                     }
-                    return code; // Return plain code if hljs not available
-                }
-            });
-        }
-
-        function renderNavigation() {
-            const nav = document.getElementById('navigation');
-            const categories = {};
-            
-            docs.forEach(doc => {
-                if (!categories[doc.category]) {
-                    categories[doc.category] = [];
-                }
-                categories[doc.category].push(doc);
-            });
-
-            let html = '';
-            Object.keys(categories).forEach(category => {
-                html += `<div class="category">${category}</div>`;
-                categories[category]
-                    .sort((a, b) => a.order - b.order)
-                    .forEach(doc => {
-                        html += `
-                            <div class="nav-item" data-id="${doc.id}">
-                                <div style="font-weight: 500;">${doc.title}</div>
-                                <div style="font-size: 0.8em; color: #666; margin-top: 0.25rem;">
-                                    ${doc.description}
-                                </div>
-                            </div>
-                        `;
-                    });
-            });
-
-            nav.innerHTML = html;
-
-            // Add click handlers
-            nav.querySelectorAll('.nav-item').forEach(item => {
-                item.addEventListener('click', () => {
-                    const docId = item.dataset.id;
-                    loadDocument(docId);
-                });
-            });
-        }
-
-        async function loadDocument(docId) {
-            const doc = docs.find(d => d.id === docId);
-            if (!doc) return;
-
-            // Update active state
-            document.querySelectorAll('.nav-item').forEach(item => {
-                item.classList.remove('active');
-            });
-            document.querySelector(`[data-id="${docId}"]`).classList.add('active');
-
-            const content = document.getElementById('content');
-            content.innerHTML = '<div class="loading">Loading document...</div>';
-
-            try {
-                let markdown;
-                if (docCache[docId]) {
-                    markdown = docCache[docId];
-                } else {
-                    const response = await fetch(`${baseUrl}${doc.file}`);
-                    if (!response.ok) throw new Error(`Failed to load ${doc.file}`);
-                    markdown = await response.text();
-                    docCache[docId] = markdown;
-                }
-
-                let html;
-                
-                // Check if it's a JSON file
-                if (doc.file.endsWith('.json')) {
-                    try {
-                        // Parse and pretty-print JSON
-                        const jsonData = JSON.parse(markdown);
-                        html = `<pre><code class="language-json">${JSON.stringify(jsonData, null, 2)}</code></pre>`;
-                        
-                        // Apply syntax highlighting
-                        content.innerHTML = html;
-                        if (typeof hljs !== 'undefined' && hljs.highlightElement) {
-                            content.querySelectorAll('pre code').forEach((block) => {
-                                try {
-                                    hljs.highlightElement(block);
-                                } catch (err) {
-                                    console.warn('Failed to highlight JSON code block:', err);
-                                }
-                            });
-                        } else {
-                            console.warn('highlight.js not available for JSON highlighting');
-                        }
-                    } catch (jsonError) {
-                        console.error('Error parsing JSON:', jsonError);
-                        html = `<pre>${markdown}</pre>`;
-                        content.innerHTML = html;
+                ]
+            },
+            navigation: {
+                showCategories: true,
+                collapsible: true,
+                showDescription: true,
+                sortBy: 'order'
+            },
+            search: {
+                enabled: true,
+                placeholder: 'Search training science docs...',
+                searchInTags: true,
+                maxResults: 10
+            },
+            render: {
+                syntaxHighlighting: true,
+                highlightTheme: 'github',
+                copyCodeButton: true,
+                linkTarget: '_blank'
+            },
+            // Configure the built-in theme system
+            theme: {
+                name: 'default',
+                switcherPosition: 'header',  // Shows theme switcher in header
+                darkTogglePosition: 'header', // Shows dark mode toggle in header
+                showPreview: true,           // Shows theme preview
+                showDescription: false,      // Don't show theme descriptions
+                allowCustomThemes: true,     // Allow custom theme creation
+                enablePersistence: true,     // Remember theme choice
+                storageKey: 'training-docs-theme'
+            },
+            // Mobile configuration (most defaults are good, but you can customize)
+            responsive: true,  // Enable responsive design (default: true)
+            mobile: {
+                enabled: true,  // Enable mobile optimizations (default: true)
+                navigation: {
+                    swipeGestures: true,      // Swipe to open/close sidebar
+                    collapseBehavior: 'overlay', // Sidebar overlays content on mobile
+                    showBackdrop: true,       // Show dark backdrop when sidebar is open
+                    closeOnOutsideClick: true // Click backdrop to close sidebar
+                },
+                gestures: {
+                    swipeToNavigate: true,    // Enable swipe gestures
+                    swipeThreshold: 50        // Pixels needed to trigger swipe
+                },
+                typography: {
+                    // Font sizes automatically scale down on mobile
+                    baseFontSize: {
+                        xs: 14,  // Extra small screens
+                        sm: 15,  // Small screens
+                        md: 16   // Medium+ screens
                     }
-                } else {
-                    // Parse as markdown
-                    html = marked.parse(markdown);
-                    content.innerHTML = html;
-                    
-                    // Apply syntax highlighting to code blocks
-                    if (typeof hljs !== 'undefined' && hljs.highlightElement) {
-                        content.querySelectorAll('pre code').forEach((block) => {
-                            try {
-                                hljs.highlightElement(block);
-                            } catch (err) {
-                                console.warn('Failed to highlight markdown code block:', err);
-                            }
-                        });
-                    } else {
-                        console.warn('highlight.js not available for markdown highlighting');
-                    }
-                    
-                    // Intercept internal links
-                    interceptInternalLinks();
                 }
-                
-                currentDoc = doc;
-
-                // Scroll to top
-                content.scrollTop = 0;
-            } catch (error) {
-                console.error('Error loading document:', error);
-                content.innerHTML = `
-                    <div class="error">
-                        <h3>Error Loading Document</h3>
-                        <p>Failed to load ${doc.title}. Please try refreshing the page.</p>
-                        <details>
-                            <summary>Error Details</summary>
-                            <pre>${error.message}</pre>
-                        </details>
-                    </div>
-                `;
-            }
-        }
-
-        function setupSearch() {
-            const searchInput = document.getElementById('searchInput');
-            searchInput.addEventListener('input', (e) => {
-                const query = e.target.value.toLowerCase();
-                document.querySelectorAll('.nav-item').forEach(item => {
-                    const text = item.textContent.toLowerCase();
-                    item.style.display = text.includes(query) ? 'block' : 'none';
-                });
-            });
-        }
-        
-        function interceptInternalLinks() {
-            const content = document.getElementById('content');
-            content.querySelectorAll('a').forEach(link => {
-                const href = link.getAttribute('href');
-                if (href && (href.startsWith('./') || href.endsWith('.md'))) {
-                    link.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        
-                        // Extract the filename from the link
-                        let filename = href.replace('./', '');
-                        
-                        // Handle links with subdirectories
-                        if (filename.includes('/')) {
-                            // For now, just get the full path
-                            // e.g., "collaboration-templates/research-partnership-agreement.md"
-                        }
-                        
-                        // Find the matching document
-                        const matchingDoc = docs.find(d => d.file === filename);
-                        
-                        if (matchingDoc) {
-                            loadDocument(matchingDoc.id);
-                        } else {
-                            console.warn('No matching document found for:', filename);
-                            
-                            // Try without extension
-                            const filenameNoExt = filename.replace('.md', '');
-                            const matchingDocNoExt = docs.find(d => 
-                                d.file.replace('.md', '') === filenameNoExt
-                            );
-                            
-                            if (matchingDocNoExt) {
-                                loadDocument(matchingDocNoExt.id);
-                            }
-                        }
-                    });
-                }
-            });
-        }
-
-        // Register service worker
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', function() {
-                navigator.serviceWorker.register('./sw.js')
-                    .then(function(registration) {
-                        console.log('ServiceWorker registration successful');
-                    })
-                    .catch(function(error) {
-                        console.log('ServiceWorker registration failed: ', error);
-                    });
-            });
-        }
-
-        // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
-            renderNavigation();
-            setupSearch();
-            
-            // Load first document
-            if (docs.length > 0) {
-                loadDocument(docs[0].id);
             }
         });
         
-        } // End startViewer function
+        // Define and register custom Training Science theme
+        const trainingTheme = viewer.createCustomTheme('training-science', {
+            colors: {
+                primary: '#2563eb',
+                textPrimary: '#1f2937',
+                background: '#f8fafc',
+                surface: '#ffffff',
+                border: '#e2e8f0',
+                code: '#7c3aed',
+                codeBackground: '#f3f4f6'
+            }
+        });
         
-        // Check if libraries are already loaded, otherwise wait
-        if (typeof marked !== 'undefined') {
-            initializeViewer();
-        } else {
-            window.addEventListener('load', initializeViewer);
-        }
+        viewer.registerTheme(trainingTheme);
     </script>
 </body>
 </html>
