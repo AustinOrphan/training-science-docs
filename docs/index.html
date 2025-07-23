@@ -261,8 +261,8 @@
             }
         });
         
-        // Create and register custom Training Science theme
-        const trainingTheme = viewer.createCustomTheme('training-science', {
+        // Create and register custom Training Science light theme
+        const trainingLightTheme = viewer.createCustomTheme('training-science-light', {
             colors: {
                 primary: '#2563eb',
                 secondary: '#3b82f6',
@@ -289,9 +289,46 @@
             borderRadius: '0.375rem'
         });
         
-        // Register and set the custom theme
-        viewer.registerTheme(trainingTheme);
-        viewer.setTheme('training-science');
+        // Create and register custom Training Science dark theme
+        const trainingDarkTheme = viewer.createCustomTheme('training-science-dark', {
+            colors: {
+                primary: '#3b82f6',
+                secondary: '#60a5fa',
+                textPrimary: '#f3f4f6',
+                textSecondary: '#d1d5db',
+                textLight: '#9ca3af',
+                text: '#e5e7eb',
+                background: '#111827',
+                surface: '#1f2937',
+                border: '#374151',
+                code: '#a78bfa',
+                codeBackground: '#1f2937',
+                link: '#60a5fa',
+                linkHover: '#93bbfc',
+                error: '#f87171',
+                warning: '#fbbf24',
+                success: '#34d399'
+            },
+            fonts: {
+                body: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                heading: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                code: 'Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace'
+            },
+            borderRadius: '0.375rem'
+        });
+        
+        // Register both themes
+        viewer.registerTheme(trainingLightTheme);
+        viewer.registerTheme(trainingDarkTheme);
+        
+        // Set the light theme as default
+        viewer.setTheme('training-science-light');
+        
+        // Update dark mode toggle configuration to use our custom themes
+        if (viewer.darkModeToggle) {
+            viewer.darkModeToggle.options.lightThemeName = 'training-science-light';
+            viewer.darkModeToggle.options.darkThemeName = 'training-science-dark';
+        }
     </script>
 </body>
 </html>
