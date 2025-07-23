@@ -33,7 +33,8 @@ This repository follows a hybrid static site pattern:
   - `training-implementation-guide.md` - Science-to-code mapping
   - `training-calculations-reference.md` - Developer formulas
   - `training-bibliography.md` - Complete citations
-- **Supporting content**: Algorithm guides, API specs, collaboration templates
+- **Supporting content**: README.md, ai-disclaimer.md, collaboration-templates/
+- **Organization folders**: planning/, resources/, archive/
 - **Content delivery**: GitHub raw URLs serve content to live viewer
 
 ### Deployment Architecture  
@@ -45,6 +46,14 @@ This repository follows a hybrid static site pattern:
 ### Dual Development Model
 1. **Content development**: Edit markdown files in root, changes auto-deploy
 2. **Viewer development**: Work in `/viewer/` submodule, build and copy UMD to `/docs/`
+
+### Folder Organization
+- **`planning/`**: Project management files (roadmaps, guides, trackers, specifications)
+- **`resources/`**: Research resources and data files
+- **`archive/`**: Files moved for manual review or potential removal
+- **`collaboration-templates/`**: Legal and partnership documentation
+- **`docs/`**: Production deployment files
+- **`viewer/`**: Git submodule for the documentation viewer library
 
 ## Document Configuration
 
