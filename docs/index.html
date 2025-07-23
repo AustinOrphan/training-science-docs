@@ -24,6 +24,11 @@
     
     <script src="markdown-docs-viewer.umd.js"></script>
     <script>
+        // Ensure hljs is available globally
+        if (typeof hljs !== 'undefined') {
+            window.hljs = hljs;
+        }
+        
         const { createViewer, defaultTheme, darkTheme } = window.MarkdownDocsViewer;
 
         // Configuration for the training science documentation
