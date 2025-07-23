@@ -261,10 +261,8 @@
             }
         });
         
-        // Access the theme manager and create custom Training Science theme
-        const themeManager = viewer.getThemeManager();
-        
-        const trainingTheme = themeManager.createCustomTheme('training-science', {
+        // Create and register custom Training Science theme
+        const trainingTheme = viewer.createCustomTheme('training-science', {
             colors: {
                 primary: '#2563eb',
                 secondary: '#3b82f6',
@@ -291,8 +289,9 @@
             borderRadius: '0.375rem'
         });
         
-        // Set the custom theme as the default
-        themeManager.setTheme('training-science');
+        // Register and set the custom theme
+        viewer.registerTheme(trainingTheme);
+        viewer.setTheme('training-science');
     </script>
 </body>
 </html>
