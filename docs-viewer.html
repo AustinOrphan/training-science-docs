@@ -102,31 +102,61 @@
                 copyCodeButton: true,
                 linkTarget: '_blank'
             },
-            // Remove the hardcoded theme and use the default theme
-            theme: defaultTheme,
-            // Add UI configuration to show theme controls
-            ui: {
-                showThemeSwitcher: true,
-                showDarkModeToggle: true,
-                availableThemes: [
-                    { id: 'default', name: 'Light', theme: defaultTheme },
-                    { id: 'dark', name: 'Dark', theme: darkTheme },
-                    {
-                        id: 'training-science',
-                        name: 'Training Science',
-                        theme: {
-                            ...defaultTheme,
-                            name: 'training-science',
-                            colors: {
-                                ...defaultTheme.colors,
-                                primary: '#2563eb',
-                                textPrimary: '#1f2937'
-                            }
-                        }
+            // Configure the built-in theme system
+            theme: {
+                name: 'default',
+                switcherPosition: 'header',  // Shows theme switcher in header
+                darkTogglePosition: 'header', // Shows dark mode toggle in header
+                showPreview: true,           // Shows theme preview
+                showDescription: false,      // Don't show theme descriptions
+                allowCustomThemes: true,     // Allow custom theme creation
+                enablePersistence: true,     // Remember theme choice
+                storageKey: 'training-docs-theme'
+            },
+            // Mobile configuration (most defaults are good, but you can customize)
+            responsive: true,  // Enable responsive design (default: true)
+            mobile: {
+                enabled: true,  // Enable mobile optimizations (default: true)
+                navigation: {
+                    swipeGestures: true,      // Swipe to open/close sidebar
+                    collapseBehavior: 'overlay', // Sidebar overlays content on mobile
+                    showBackdrop: true,       // Show dark backdrop when sidebar is open
+                    closeOnOutsideClick: true // Click backdrop to close sidebar
+                },
+                gestures: {
+                    swipeToNavigate: true,    // Enable swipe gestures
+                    swipeThreshold: 50        // Pixels needed to trigger swipe
+                },
+                typography: {
+                    // Font sizes automatically scale down on mobile
+                    baseFontSize: {
+                        xs: 14,  // Extra small screens
+                        sm: 15,  // Small screens
+                        md: 16   // Medium+ screens
                     }
-                ]
+                }
             }
         });
+        
+        // Define and register custom Training Science theme
+        const trainingTheme = viewer.createCustomTheme('training-science', {
+            colors: {
+                primary: '#2563eb',
+                textPrimary: '#1f2937',
+                background: '#f8fafc',
+                surface: '#ffffff',
+                border: '#e2e8f0',
+                code: '#7c3aed',
+                codeBackground: '#f3f4f6'
+            }
+        });
+        
+        viewer.registerTheme(trainingTheme);
+        
+        // You can also handle theme changes if needed
+        viewer.config.onThemeChange = (theme) => {
+            console.log('Theme changed to:', theme.name);
+        };
     </script>
 </body>
 </html>
