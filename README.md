@@ -59,11 +59,6 @@ Comprehensive scientific documentation and references for advanced running train
 
 Interactive documentation browser with search, navigation, and syntax highlighting.
 
-### As NPM Package
-```bash
-npm install @yourusername/training-science-docs
-```
-
 ### As Git Submodule
 ```bash
 git submodule add https://github.com/AustinOrphan/training-science-docs.git docs/science

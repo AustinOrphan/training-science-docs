@@ -29,7 +29,7 @@
             window.hljs = hljs;
         }
         
-        const { createViewer, defaultTheme, darkTheme } = window.MarkdownDocsViewer;
+        const { createViewer, themes, createCustomTheme } = window.MarkdownDocsViewer;
 
         // Configuration for the training science documentation
         const viewer = createViewer({
@@ -262,7 +262,9 @@
         });
         
         // Create and register custom Training Science light theme
-        const trainingLightTheme = viewer.createCustomTheme('training-science-light', {
+        const trainingLightTheme = createCustomTheme('training-science-light', {
+            baseTheme: 'default',
+            mode: 'light',
             colors: {
                 primary: '#2563eb',
                 secondary: '#3b82f6',
@@ -290,7 +292,9 @@
         });
         
         // Create and register custom Training Science dark theme
-        const trainingDarkTheme = viewer.createCustomTheme('training-science-dark', {
+        const trainingDarkTheme = createCustomTheme('training-science-dark', {
+            baseTheme: 'default', 
+            mode: 'dark',
             colors: {
                 primary: '#3b82f6',
                 secondary: '#60a5fa',
