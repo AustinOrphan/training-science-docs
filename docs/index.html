@@ -23,28 +23,39 @@
     <div id="docs"></div>
     
     <script>
-        // Wait for all dependencies to load
-        window.addEventListener('DOMContentLoaded', function() {
-            // Ensure hljs is available globally
-            if (typeof hljs !== 'undefined') {
-                window.hljs = hljs;
-                console.log('highlight.js version:', hljs.versionString);
+        // Track script loading
+        let depsLoaded = 0;
+        
+        function dependencyLoaded() {
+            depsLoaded++;
+            if (depsLoaded === 3) {
+                // All dependencies ready, load viewer
+                loadViewer();
             }
-            
-            // Load the viewer after dependencies are ready
+        }
+        
+        function loadViewer() {
             const script = document.createElement('script');
             script.src = 'markdown-docs-viewer.umd.js';
             script.onload = function() {
+                // Clear any stale theme data
+                localStorage.removeItem('training-docs-theme');
+                localStorage.removeItem('mdv-theme');
+                localStorage.removeItem('mdv-selected-theme');
+                
+                // Initialize viewer
                 initializeViewer();
             };
+            script.onerror = function() {
+                console.error('Failed to load markdown-docs-viewer.umd.js');
+            };
             document.head.appendChild(script);
-        });
+        }
         
         function initializeViewer() {
-            // Clear any old theme references
-            const oldTheme = localStorage.getItem('training-docs-theme');
-            if (oldTheme === 'training-science-light' || oldTheme === 'training-science-dark') {
-                localStorage.removeItem('training-docs-theme');
+            // Ensure hljs is available globally
+            if (typeof hljs !== 'undefined') {
+                window.hljs = hljs;
             }
             
             const { createViewer, themes } = window.MarkdownDocsViewer;
@@ -276,7 +287,35 @@
                 }
             }
         });
+        
+        console.log('Viewer initialized successfully');
         }
+        
+        // Monitor dependency loading
+        const scripts = document.querySelectorAll('script[src]');
+        scripts.forEach(script => {
+            if (script.src.includes('marked') || script.src.includes('highlight')) {
+                script.addEventListener('load', dependencyLoaded);
+                script.addEventListener('error', () => {
+                    console.error('Failed to load dependency:', script.src);
+                });
+            }
+        });
+        
+        // Fallback if scripts already loaded
+        window.addEventListener('DOMContentLoaded', function() {
+            setTimeout(() => {
+                if (
+                    typeof marked !== 'undefined' &&
+                    typeof hljs !== 'undefined' &&
+                    typeof markedHighlight !== 'undefined'
+                ) {
+                    if (depsLoaded < 3) {
+                        loadViewer();
+                    }
+                }
+            }, 100);
+        });
     </script>
 </body>
 </html>
