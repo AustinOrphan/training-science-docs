@@ -10,12 +10,11 @@ This is a static documentation site for training science research containing 40+
 
 ### Local Development
 - `python3 -m http.server 8000` - Serve locally for testing (from root directory)
-- Open `docs-viewer.html` for development/testing version
-- Open `docs/index.html` for production version testing
+- Open `http://localhost:8000/` - Unified viewer auto-detects environment
 
 ### Viewer Library Development (if working on /viewer submodule)
 - `cd viewer && npm run dev` - Start Vite development server on port 5000
-- `cd viewer && npm run build` - Build library and copy to `/docs/markdown-docs-viewer.umd.js`
+- `cd viewer && npm run build` - Build library (creates `dist/index.umd.cjs`)
 - `cd viewer && npm test` - Run all tests
 - `cd viewer && npm run lint` - Lint TypeScript files
 
@@ -24,7 +23,7 @@ All markdown files are in the repository root and automatically served via GitHu
 
 ## Architecture Overview
 
-This repository follows a hybrid static site pattern:
+This repository follows a simplified static site pattern:
 
 ### Content Architecture
 - **Core documentation**: 5 main markdown files in repository root
@@ -38,14 +37,17 @@ This repository follows a hybrid static site pattern:
 - **Content delivery**: GitHub raw URLs serve content to live viewer
 
 ### Deployment Architecture  
-- **Production viewer**: `/docs/index.html` (served at austinorphan.com)
-- **Development viewer**: `/docs-viewer.html` (local testing)
-- **Library dependency**: `/docs/markdown-docs-viewer.umd.js` (copied from submodule)
+- **Unified viewer**: `/index.html` (auto-detects dev/prod environment)
+  - Development mode: Uses local files via `type: 'local'`
+  - Production mode: Uses GitHub raw URLs via `type: 'url'`
 - **Git submodule**: `/viewer/` contains the viewer library source
+- **Direct loading**: Both environments load viewer from `viewer/dist/index.umd.cjs`
+- **Legacy redirects**: Old URLs (`/docs-viewer.html`, `/docs/index.html`) redirect to `/index.html`
 
-### Dual Development Model
+### Development Model
 1. **Content development**: Edit markdown files in root, changes auto-deploy
-2. **Viewer development**: Work in `/viewer/` submodule, build and copy UMD to `/docs/`
+2. **Viewer development**: Work in `/viewer/` submodule, build creates `dist/index.umd.cjs`
+3. **No manual copying**: Viewer is loaded directly from submodule build output
 
 ### Folder Organization
 - **`planning/`**: Project management files (roadmaps, guides, trackers, specifications)
@@ -170,7 +172,7 @@ This documentation follows academic standards:
 ## Common Pitfalls
 
 1. **Don't assume CDN packages exist** - The markdown-docs-viewer isn't published to npm despite the README suggesting it
-2. **Path issues**: The live site serves from `/docs/` subdirectory, so relative paths need adjustment
+2. **Path detection**: The unified viewer auto-detects environment based on URL path
 3. **Dependency loading order**: highlight.js must load before the viewer for proper detection
-4. **Local vs live paths**: Development uses `basePath: '.'`, live site uses GitHub raw URLs
+4. **Local vs live paths**: Development uses `type: 'local'`, production uses `type: 'url'` with GitHub raw URLs
 5. **Academic rigor**: All content changes must maintain scientific accuracy and include proper citations
