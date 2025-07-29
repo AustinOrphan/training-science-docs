@@ -12,6 +12,71 @@
         #docs {
             height: 100vh;
         }
+        .loading-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            text-align: center;
+        }
+        .loading-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .error-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            text-align: center;
+        }
+        .error-message {
+            background-color: #fee;
+            border: 1px solid #fcc;
+            border-radius: 8px;
+            color: #c33;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .error-message h2 {
+            margin-top: 0;
+            color: #c33;
+        }
+        .error-details {
+            background-color: #f5f5f5;
+            border-radius: 4px;
+            padding: 10px;
+            margin: 10px 0;
+            font-family: monospace;
+            font-size: 14px;
+            text-align: left;
+        }
+        .retry-button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .retry-button:hover {
+            background-color: #2980b9;
+        }
+        .retry-button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
     </style>
     
     <!-- Dependencies for UMD build -->
@@ -23,8 +88,68 @@
     <div id="docs"></div>
     
     <script>
-        // Prevent multiple viewer loads
+        // Configuration
+        const MAX_LOAD_TIMEOUT = 10000; // 10 seconds
+        const RETRY_DELAY = 1000; // 1 second between retries
+        
+        // State tracking
         let viewerLoaded = false;
+        let loadingTimeout = null;
+        let retryCount = 0;
+        const maxRetries = 3;
+        
+        // Show loading spinner initially
+        function showLoading() {
+            document.getElementById('docs').innerHTML = `
+                <div class="loading-container">
+                    <div class="loading-spinner"></div>
+                    <p>Loading documentation viewer...</p>
+                </div>
+            `;
+        }
+        
+        // Show error message with retry option
+        function showError(details) {
+            document.getElementById('docs').innerHTML = `
+                <div class="error-container">
+                    <div class="error-message">
+                        <h2>Failed to Load Documentation</h2>
+                        <p>We're having trouble loading the documentation viewer. This might be due to network issues or blocked resources.</p>
+                        <div class="error-details">
+                            ${details}
+                        </div>
+                    </div>
+                    <button class="retry-button" onclick="retryLoading()">
+                        Try Again
+                    </button>
+                    <p style="margin-top: 20px; color: #666;">
+                        If the problem persists, please check your internet connection or try refreshing the page.
+                    </p>
+                </div>
+            `;
+        }
+        
+        // Retry loading
+        function retryLoading() {
+            retryCount++;
+            viewerLoaded = false;
+            showLoading();
+            
+            // Clear any existing timeout
+            if (loadingTimeout) {
+                clearTimeout(loadingTimeout);
+            }
+            
+            // Set new timeout
+            loadingTimeout = setTimeout(() => {
+                if (!viewerLoaded) {
+                    showError('Loading timeout exceeded. Dependencies may have failed to load.');
+                }
+            }, MAX_LOAD_TIMEOUT);
+            
+            // Try loading again
+            setTimeout(checkDependenciesAndLoad, RETRY_DELAY);
+        }
         
         function loadViewer() {
             if (viewerLoaded) {
@@ -46,6 +171,7 @@
             script.onerror = function() {
                 console.error('Failed to load viewer/dist/index.umd.cjs');
                 viewerLoaded = false; // Allow retry on error
+                showError('Failed to load viewer script: viewer/dist/index.umd.cjs');
             };
             document.head.appendChild(script);
         }
@@ -185,24 +311,63 @@
         function checkDependenciesAndLoad() {
             if (viewerLoaded) return;
             
-            if (
-                typeof marked !== 'undefined' &&
-                typeof hljs !== 'undefined' &&
-                typeof markedHighlight !== 'undefined'
-            ) {
+            const deps = {
+                marked: typeof marked !== 'undefined',
+                hljs: typeof hljs !== 'undefined', 
+                markedHighlight: typeof markedHighlight !== 'undefined'
+            };
+            
+            if (deps.marked && deps.hljs && deps.markedHighlight) {
                 console.log('All dependencies loaded, initializing viewer...');
+                // Clear timeout as dependencies loaded successfully
+                if (loadingTimeout) {
+                    clearTimeout(loadingTimeout);
+                    loadingTimeout = null;
+                }
                 loadViewer();
             } else {
-                console.log('Dependencies status:', {
-                    marked: typeof marked !== 'undefined',
-                    hljs: typeof hljs !== 'undefined', 
-                    markedHighlight: typeof markedHighlight !== 'undefined'
-                });
+                console.log('Dependencies status:', deps);
+                
+                // If this is the final check after timeout, show error
+                if (!loadingTimeout) {
+                    const missingDeps = [];
+                    if (!deps.marked) missingDeps.push('marked');
+                    if (!deps.hljs) missingDeps.push('highlight.js');
+                    if (!deps.markedHighlight) missingDeps.push('marked-highlight');
+                    
+                    showError(`Failed to load dependencies: ${missingDeps.join(', ')}<br>
+                        Status: marked=${deps.marked}, hljs=${deps.hljs}, markedHighlight=${deps.markedHighlight}`);
+                }
             }
+        }
+        
+        // Initialize loading process
+        function initializeLoading() {
+            showLoading();
+            
+            // Set timeout for loading
+            loadingTimeout = setTimeout(() => {
+                if (!viewerLoaded) {
+                    const deps = {
+                        marked: typeof marked !== 'undefined',
+                        hljs: typeof hljs !== 'undefined', 
+                        markedHighlight: typeof markedHighlight !== 'undefined'
+                    };
+                    
+                    const missingDeps = [];
+                    if (!deps.marked) missingDeps.push('marked');
+                    if (!deps.hljs) missingDeps.push('highlight.js');
+                    if (!deps.markedHighlight) missingDeps.push('marked-highlight');
+                    
+                    showError(`Loading timeout exceeded (${MAX_LOAD_TIMEOUT/1000} seconds).<br>
+                        Missing dependencies: ${missingDeps.join(', ')}`);
+                }
+            }, MAX_LOAD_TIMEOUT);
         }
         
         // Check dependencies when DOM is ready
         window.addEventListener('DOMContentLoaded', function() {
+            initializeLoading();
             // Give scripts time to load
             setTimeout(checkDependenciesAndLoad, 100);
         });
