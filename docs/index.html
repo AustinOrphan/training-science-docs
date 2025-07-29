@@ -62,8 +62,8 @@
         const viewer = createViewer({
             container: '#docs',
             title: 'Training Science Documentation',
-            theme: {
-                name: 'default',
+            theme: 'default', // Use theme name, not object
+            themeConfig: {
                 switcherPosition: 'header',
                 darkTogglePosition: 'header',
                 showPreview: true,
