@@ -193,7 +193,14 @@
                 window.hljs = hljs;
             }
             
-            const { createViewer, themes } = window.MarkdownDocsViewer || MarkdownDocsViewer;
+            // Check for viewer library availability
+            const viewerLib = window.MarkdownDocsViewer;
+            if (!viewerLib || typeof viewerLib.createViewer !== 'function') {
+                console.error('MarkdownDocsViewer library not loaded or is invalid.');
+                showError('The documentation viewer library failed to load. Please check the console for errors and try again.');
+                return;
+            }
+            const { createViewer, themes } = viewerLib;
 
             // All documents
             const documents = [
