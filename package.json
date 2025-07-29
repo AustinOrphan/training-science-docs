@@ -1,12 +1,20 @@
 {
-  "name": "@yourusername/training-science-docs",
+  "name": "training-science-docs",
   "version": "1.0.0",
   "description": "Scientific documentation and references for advanced running training plans",
-  "main": "README.md",
+  "private": true,
+  "main": "index.html",
+  "scripts": {
+    "serve": "python3 -m http.server 8000",
+    "dev": "python3 -m http.server 8000"
+  },
   "files": [
     "*.md",
-    "images/",
-    "diagrams/"
+    "index.html",
+    "docs/",
+    "planning/",
+    "resources/",
+    "collaboration-templates/"
   ],
   "keywords": [
     "running",
@@ -16,11 +24,11 @@
     "vdot",
     "periodization"
   ],
-  "author": "",
+  "author": "AustinOrphan",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourusername/training-science-docs.git"
+    "url": "https://github.com/AustinOrphan/training-science-docs.git"
   },
-  "homepage": "https://github.com/yourusername/training-science-docs#readme"
+  "homepage": "https://austinorphan.com/training-science-docs/"
 }
