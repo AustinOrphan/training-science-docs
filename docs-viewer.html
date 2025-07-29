@@ -25,16 +25,22 @@
     <script>
         // Track script loading
         let depsLoaded = 0;
+        let viewerLoaded = false; // Prevent multiple loads
         
         function dependencyLoaded() {
             depsLoaded++;
-            if (depsLoaded === 3) {
+            if (depsLoaded === 3 && !viewerLoaded) {
                 // All dependencies ready, load viewer
                 loadViewer();
             }
         }
         
         function loadViewer() {
+            if (viewerLoaded) {
+                return; // Prevent multiple loads
+            }
+            viewerLoaded = true;
+            
             const script = document.createElement('script');
             script.src = './viewer/dist/index.umd.cjs';
             script.onload = function() {
@@ -48,6 +54,7 @@
             };
             script.onerror = function() {
                 console.error('Failed to load viewer/dist/index.umd.cjs');
+                viewerLoaded = false; // Allow retry on error
             };
             document.head.appendChild(script);
         }
@@ -200,7 +207,8 @@
                 if (
                     typeof marked !== 'undefined' &&
                     typeof hljs !== 'undefined' &&
-                    typeof markedHighlight !== 'undefined'
+                    typeof markedHighlight !== 'undefined' &&
+                    !viewerLoaded
                 ) {
                     if (depsLoaded < 3) {
                         loadViewer();

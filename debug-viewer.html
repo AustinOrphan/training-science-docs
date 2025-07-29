@@ -45,7 +45,14 @@
     <div id="debug-panel"></div>
     
     <script>
-        // Debug logging
+        // Store original console methods before any overrides
+        const originalConsole = {
+            log: console.log,
+            warn: console.warn,
+            error: console.error
+        };
+
+        // Debug logging - use original console to avoid recursion
         const debugLog = (message, type = 'info') => {
             const panel = document.getElementById('debug-panel');
             const line = document.createElement('div');
@@ -53,16 +60,11 @@
             line.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
             panel.appendChild(line);
             panel.scrollTop = panel.scrollHeight;
-            console.log(`[DEBUG ${type}]`, message);
+            // Use original console.log to avoid recursion
+            originalConsole.log(`[DEBUG ${type}]`, message);
         };
 
         // Override console methods to capture all logs
-        const originalConsole = {
-            log: console.log,
-            warn: console.warn,
-            error: console.error
-        };
-        
         console.log = (...args) => {
             debugLog('LOG: ' + args.join(' '), 'info');
             originalConsole.log(...args);
