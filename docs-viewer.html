@@ -17,23 +17,14 @@
     <!-- Dependencies for UMD build -->
     <script src="https://cdn.jsdelivr.net/npm/marked@14.1.2/lib/marked.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked-highlight@2.1.4/lib/index.umd.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.10.0/lib/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/highlight.min.js"></script>
 </head>
 <body>
     <div id="docs"></div>
     
     <script>
-        // Track script loading
-        let depsLoaded = 0;
-        let viewerLoaded = false; // Prevent multiple loads
-        
-        function dependencyLoaded() {
-            depsLoaded++;
-            if (depsLoaded === 3 && !viewerLoaded) {
-                // All dependencies ready, load viewer
-                loadViewer();
-            }
-        }
+        // Prevent multiple viewer loads
+        let viewerLoaded = false;
         
         function loadViewer() {
             if (viewerLoaded) {
@@ -190,31 +181,35 @@
         console.log('Viewer initialized successfully');
         }
         
-        // Monitor dependency loading
-        const scripts = document.querySelectorAll('script[src]');
-        scripts.forEach(script => {
-            if (script.src.includes('marked') || script.src.includes('highlight')) {
-                script.addEventListener('load', dependencyLoaded);
-                script.addEventListener('error', () => {
-                    console.error('Failed to load dependency:', script.src);
+        // Check if all dependencies are loaded and load viewer
+        function checkDependenciesAndLoad() {
+            if (viewerLoaded) return;
+            
+            if (
+                typeof marked !== 'undefined' &&
+                typeof hljs !== 'undefined' &&
+                typeof markedHighlight !== 'undefined'
+            ) {
+                console.log('All dependencies loaded, initializing viewer...');
+                loadViewer();
+            } else {
+                console.log('Dependencies status:', {
+                    marked: typeof marked !== 'undefined',
+                    hljs: typeof hljs !== 'undefined', 
+                    markedHighlight: typeof markedHighlight !== 'undefined'
                 });
             }
+        }
+        
+        // Check dependencies when DOM is ready
+        window.addEventListener('DOMContentLoaded', function() {
+            // Give scripts time to load
+            setTimeout(checkDependenciesAndLoad, 100);
         });
         
-        // Fallback if scripts already loaded
-        window.addEventListener('DOMContentLoaded', function() {
-            setTimeout(() => {
-                if (
-                    typeof marked !== 'undefined' &&
-                    typeof hljs !== 'undefined' &&
-                    typeof markedHighlight !== 'undefined' &&
-                    !viewerLoaded
-                ) {
-                    if (depsLoaded < 3) {
-                        loadViewer();
-                    }
-                }
-            }, 100);
+        // Also check on window load as final fallback
+        window.addEventListener('load', function() {
+            setTimeout(checkDependenciesAndLoad, 200);
         });
     </script>
 </body>
