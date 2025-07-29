@@ -10,7 +10,7 @@ This is a static documentation site for training science research containing 40+
 
 ### Local Development
 - `python3 -m http.server 8000` - Serve locally for testing (from root directory)
-- Open `http://localhost:8000/` - View documentation locally (still loads content from GitHub)
+- Open `http://localhost:8000/` - View documentation with local markdown files
 
 ### Viewer Library Development (if working on /viewer submodule)
 - `cd viewer && npm run dev` - Start Vite development server on port 5000
@@ -38,15 +38,17 @@ This repository follows a simplified static site pattern:
 
 ### Deployment Architecture  
 - **Single viewer**: `/index.html` serves all documentation
-- **Always GitHub content**: Uses GitHub raw URLs for all document loading
+- **Smart content loading**: 
+  - Local development (localhost): Uses local markdown files
+  - Production (GitHub Pages): Uses GitHub raw URLs
 - **Git submodule**: `/viewer/` contains the viewer library source
 - **Direct loading**: Viewer loads from `viewer/dist/index.umd.cjs` (adjusts path based on URL)
 - **Legacy redirects**: Old URLs (`/docs-viewer.html`, `/docs/index.html`) redirect to `/index.html`
 
 ### Development Model
-1. **Content development**: Edit markdown files in root, push to GitHub to see changes
+1. **Content development**: Edit markdown files locally, see changes immediately
 2. **Viewer development**: Work in `/viewer/` submodule, build creates `dist/index.umd.cjs`
-3. **No environment switching**: All content always comes from GitHub
+3. **Automatic environment detection**: Based on hostname (localhost vs production)
 
 ### Folder Organization
 - **`planning/`**: Project management files (roadmaps, guides, trackers, specifications)
@@ -171,7 +173,7 @@ This documentation follows academic standards:
 ## Common Pitfalls
 
 1. **Don't assume CDN packages exist** - The markdown-docs-viewer isn't published to npm despite the README suggesting it
-2. **Content always from GitHub**: Even local development loads content from GitHub raw URLs
+2. **Environment detection**: Viewer automatically detects local vs production based on hostname
 3. **Dependency loading order**: highlight.js must load before the viewer for proper detection
-4. **Push to see changes**: Must push markdown changes to GitHub to see them (no local file serving)
+4. **Local development**: Changes to markdown files are visible immediately when served locally
 5. **Academic rigor**: All content changes must maintain scientific accuracy and include proper citations
