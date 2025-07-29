@@ -22,14 +22,32 @@
 <body>
     <div id="docs"></div>
     
-    <script src="./viewer/dist/index.umd.cjs"></script>
     <script>
-        // Ensure hljs is available globally
-        if (typeof hljs !== 'undefined') {
-            window.hljs = hljs;
-        }
+        // Wait for all dependencies to load
+        window.addEventListener('DOMContentLoaded', function() {
+            // Ensure hljs is available globally
+            if (typeof hljs !== 'undefined') {
+                window.hljs = hljs;
+                console.log('highlight.js version:', hljs.versionString);
+            }
+            
+            // Load the viewer after dependencies are ready
+            const script = document.createElement('script');
+            script.src = './viewer/dist/index.umd.cjs';
+            script.onload = function() {
+                initializeViewer();
+            };
+            document.head.appendChild(script);
+        });
         
-        const { createViewer, themes } = MarkdownDocsViewer;
+        function initializeViewer() {
+            // Clear any old theme references
+            const oldTheme = localStorage.getItem('training-docs-theme');
+            if (oldTheme === 'training-science-light' || oldTheme === 'training-science-dark') {
+                localStorage.removeItem('training-docs-theme');
+            }
+            
+            const { createViewer, themes } = MarkdownDocsViewer;
 
         // Configuration for the training science documentation
         const viewer = createViewer({
@@ -150,6 +168,7 @@
                 }
             }
         });
+        }
     </script>
 </body>
 </html>
