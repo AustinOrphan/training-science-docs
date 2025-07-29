@@ -158,7 +158,7 @@
             viewerLoaded = true;
             
             const script = document.createElement('script');
-            script.src = 'markdown-docs-viewer.umd.js';
+            script.src = '../viewer/dist/index.umd.cjs';
             script.onload = function() {
                 // Clear any stale theme data
                 localStorage.removeItem('training-docs-theme');
