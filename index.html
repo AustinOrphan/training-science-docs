@@ -92,23 +92,15 @@
         const MAX_LOAD_TIMEOUT = 10000; // 10 seconds
         const RETRY_DELAY = 1000; // 1 second between retries
         
-        // Detect if we're running locally or on GitHub Pages
-        const isLocal = window.location.hostname === 'localhost' || 
-                       window.location.hostname === '127.0.0.1' || 
-                       window.location.hostname === '';
-        
         // Configure viewer path - works from both root and /docs/
         const viewerPath = window.location.pathname.includes('/docs/') 
             ? '../viewer/dist/index.umd.cjs' 
             : './viewer/dist/index.umd.cjs';
         
-        // Use local files for development, GitHub for production
-        const documentSource = isLocal ? {
+        // Always use local files - they're in the same repo!
+        const documentSource = {
             type: 'local',
             basePath: '.'
-        } : {
-            type: 'url',
-            baseUrl: 'https://raw.githubusercontent.com/AustinOrphan/training-science-docs/main'
         };
         
         // State tracking
@@ -433,7 +425,7 @@
                 }
             });
             
-            console.log(`Viewer initialized successfully (${isLocal ? 'local' : 'production'} mode)`);
+            console.log('Viewer initialized successfully');
         }
         
         // Check if all dependencies are loaded and load viewer

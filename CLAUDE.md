@@ -34,21 +34,19 @@ This repository follows a simplified static site pattern:
   - `training-bibliography.md` - Complete citations
 - **Supporting content**: README.md, ai-disclaimer.md, collaboration-templates/
 - **Organization folders**: planning/, resources/, archive/
-- **Content delivery**: GitHub raw URLs serve content to live viewer
+- **Content delivery**: Direct file access (no external API calls)
 
 ### Deployment Architecture  
 - **Single viewer**: `/index.html` serves all documentation
-- **Smart content loading**: 
-  - Local development (localhost): Uses local markdown files
-  - Production (GitHub Pages): Uses GitHub raw URLs
+- **Always local files**: Uses relative paths to markdown files (they're in the same repo!)
 - **Git submodule**: `/viewer/` contains the viewer library source
 - **Direct loading**: Viewer loads from `viewer/dist/index.umd.cjs` (adjusts path based on URL)
 - **Legacy redirects**: Old URLs (`/docs-viewer.html`, `/docs/index.html`) redirect to `/index.html`
 
 ### Development Model
-1. **Content development**: Edit markdown files locally, see changes immediately
+1. **Content development**: Edit markdown files, changes visible immediately (local) or after push (production)
 2. **Viewer development**: Work in `/viewer/` submodule, build creates `dist/index.umd.cjs`
-3. **Automatic environment detection**: Based on hostname (localhost vs production)
+3. **No network dependencies**: All files served from the same repository
 
 ### Folder Organization
 - **`planning/`**: Project management files (roadmaps, guides, trackers, specifications)
@@ -75,8 +73,8 @@ The viewer is configured to load 6 documents in two categories:
 Document source configuration:
 ```javascript
 source: {
-    type: 'url',
-    baseUrl: 'https://raw.githubusercontent.com/AustinOrphan/training-science-docs/main'
+    type: 'local',
+    basePath: '.'
 }
 ```
 
@@ -167,13 +165,13 @@ This documentation follows academic standards:
 
 1. **Edit markdown files** in repository root
 2. **Commit and push** changes to main branch
-3. **Live site updates automatically** via GitHub raw URLs
+3. **GitHub Pages deploys automatically** with all files
 4. **No build step required** for content changes
 
 ## Common Pitfalls
 
 1. **Don't assume CDN packages exist** - The markdown-docs-viewer isn't published to npm despite the README suggesting it
-2. **Environment detection**: Viewer automatically detects local vs production based on hostname
+2. **All files are local**: No network requests needed - everything is in the same repository
 3. **Dependency loading order**: highlight.js must load before the viewer for proper detection
-4. **Local development**: Changes to markdown files are visible immediately when served locally
+4. **Changes visibility**: Immediate in local development, after push for production GitHub Pages
 5. **Academic rigor**: All content changes must maintain scientific accuracy and include proper citations
