@@ -35,7 +35,16 @@
         const viewer = createViewer({
             container: '#docs',
             title: 'Training Science Documentation',
-            theme: themes.default.light,  // Just use this instead
+            theme: {
+                name: 'default',
+                switcherPosition: 'header',
+                darkTogglePosition: 'header',
+                showPreview: true,
+                showDescription: false,
+                allowCustomThemes: false,
+                enablePersistence: true,
+                storageKey: 'training-docs-theme'
+            },
             source: {
                 type: 'url',
                 baseUrl: 'https://raw.githubusercontent.com/AustinOrphan/training-science-docs/main',
@@ -225,6 +234,28 @@
                 highlightTheme: 'github',
                 copyCodeButton: true,
                 linkTarget: '_blank'
+            },
+            // Mobile configuration
+            responsive: true,
+            mobile: {
+                enabled: true,
+                navigation: {
+                    swipeGestures: true,
+                    collapseBehavior: 'overlay',
+                    showBackdrop: true,
+                    closeOnOutsideClick: true
+                },
+                gestures: {
+                    swipeToNavigate: true,
+                    swipeThreshold: 50
+                },
+                typography: {
+                    baseFontSize: {
+                        xs: 14,
+                        sm: 15,
+                        md: 16
+                    }
+                }
             }
         });
     </script>
