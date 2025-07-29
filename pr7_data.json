@@ -1,0 +1,153 @@
+{
+  "rateLimit": {
+    "cost": 2,
+    "remaining": 4973,
+    "resetAt": "2025-07-29T13:24:47Z"
+  },
+  "repository": {
+    "pullRequest": {
+      "number": 7,
+      "title": "Fix/viewer theme api update",
+      "state": "OPEN",
+      "createdAt": "2025-07-29T12:41:51Z",
+      "updatedAt": "2025-07-29T12:43:50Z",
+      "mergedAt": null,
+      "author": {
+        "login": "AustinOrphan"
+      },
+      "baseRefName": "main",
+      "headRefName": "fix/viewer-theme-api-update",
+      "body": "",
+      "reviews": {
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "Y3Vyc29yOnYyOpO5MjAyNS0wNy0yOVQwNzo0Mzo1MC0wNTowMLkyMDI1LTA3LTI5VDA3OjQzOjQ5LTA1OjAwzrbUHBk="
+        },
+        "nodes": [
+          {
+            "id": "PRR_kwDOPPTPJM621AKM",
+            "state": "COMMENTED",
+            "submittedAt": "2025-07-29T12:42:15Z",
+            "body": "## Summary of Changes\n\nHello @AustinOrphan, I'm Gemini Code Assist[^1]! I'm currently reviewing this pull request and will post my feedback shortly. In the meantime, here's a summary to help you and other reviewers quickly get up to speed!\n\nThis pull request primarily focuses on enhancing the robustness of the viewer's initialization process by overhauling its external JavaScript dependency loading mechanism. It also includes an update to the `createViewer` API for theme configuration, separating the theme name from its specific settings. A new dedicated test page has been introduced to validate the reliability of the improved loading logic.\n\n### Highlights\n\n* **Viewer Theme API Update**: The `createViewer` function's API has been updated. The `theme` property now expects a string (e.g., `'default'`) instead of an object, and theme-specific configurations (like `switcherPosition`, `darkTogglePosition`, `showPreview`) are now nested under a new `themeConfig` object.\n* **Improved Dependency Loading**: The mechanism for ensuring external JavaScript dependencies (Marked.js, marked-highlight, and Highlight.js) are fully loaded before the viewer initializes has been significantly refactored. The previous `depsLoaded` counter has been replaced with a more robust check that verifies the global availability of `marked`, `hljs`, and `markedHighlight` objects. This check is performed on `DOMContentLoaded` and `window.load` events with `setTimeout` fallbacks to account for script loading times.\n* **Highlight.js CDN Change**: The CDN source for Highlight.js has been updated from `cdn.jsdelivr.net` to `cdnjs.cloudflare.com` in both `docs-viewer.html` and `docs/index.html`.\n* **New Loading Test Page**: A new HTML file, `test-loading-fix.html`, has been added. This page is dedicated to testing the new dependency loading pattern, verifying that all required libraries are loaded and functional before the viewer attempts to initialize, mimicking the logic applied to the main viewer files.\n\n\n\n\n\n<details>\n<summary><b>Using Gemini Code Assist</b></summary>\n<br>\n\nThe full guide for Gemini Code Assist can be found on our [documentation page](https://developers.google.com/gemini-code-assist/docs/review-github-code), here are some quick tips.\n\n<b>Invoking Gemini</b>\n\nYou can request assistance from Gemini at any point in your pull request via creating an issue comment (i.e. comment on the pull request page) using either `/gemini <command>` or `@gemini-code-assist <command>`. Below is a summary of the supported commands.\n\nFeature | Command | Description\n--- | --- | ---\nCode Review | `/gemini review` | Performs a code review for the current pull request in its current state.\nPull Request Summary | `/gemini summary` | Provides a summary of the current pull request in its current state.\nComment | @gemini-code-assist | Responds in comments when explicitly tagged, both in issue comments and review comments.\nHelp | `/gemini help` | Displays a list of available commands.\n\n<b>Customization</b>\n\nTo customize Gemini Code Assist for GitHub experience, repository maintainers can create a configuration file and/or provide a custom code review style guide (such as PEP-8 for Python) by creating and adding files to a `.gemini/` folder in the base of the repository. Detailed instructions can be found [here](https://developers.google.com/gemini-code-assist/docs/customize-gemini-behavior-github).\n\n<b>Limitations & Feedback</b>\n\nGemini Code Assist may make mistakes. Please leave feedback on any instances where its feedback is incorrect or counter productive. You can react with :thumbsup: and :thumbsdown: on @gemini-code-assist comments or fill out our [survey](https://google.qualtrics.com/jfe/form/SV_2cyuGuTWsEw84yG?Q_Language=en&utm_campaign=Q3&campaignDate=July2025&referral_code=UXRMDGG1025416) to provide feedback.\n\n<b>You can also get AI-powered code generation, chat, as well as code reviews directly in the IDE at no cost with the [Gemini Code Assist IDE Extension](https://cloud.google.com/products/gemini/code-assist).</b>\n</details>\n\n\n\n\n[^1]: Review the [Privacy Notices](https://policies.google.com/privacy), [Generative AI Prohibited Use Policy](https://policies.google.com/terms/generative-ai/use-policy), [Terms of Service](https://policies.google.com/terms), and learn how to configure Gemini Code Assist in GitHub [here](https://developers.google.com/gemini-code-assist/docs/customize-gemini-behavior-github). Gemini can make mistakes, so double check it and [use code with caution](https://support.google.com/legal/answer/13505487).\n",
+            "author": {
+              "login": "gemini-code-assist"
+            },
+            "comments": {
+              "pageInfo": {
+                "hasNextPage": false,
+                "endCursor": null
+              },
+              "nodes": []
+            }
+          },
+          {
+            "id": "PRR_kwDOPPTPJM621BwZ",
+            "state": "COMMENTED",
+            "submittedAt": "2025-07-29T12:43:50Z",
+            "body": "## Code Review\n\nThis pull request updates the viewer's theme API and refactors the dependency loading logic. The theme API change improves clarity by separating the theme name from its configuration. The new dependency loading mechanism is also more robust than the previous implementation. I've suggested changes to improve the failure handling in the new loading logic.",
+            "author": {
+              "login": "gemini-code-assist"
+            },
+            "comments": {
+              "pageInfo": {
+                "hasNextPage": false,
+                "endCursor": "Y3Vyc29yOnYyOpK0MjAyNS0wNy0yOVQxMjo0Mzo1MFrOhX8u-w=="
+              },
+              "nodes": [
+                {
+                  "id": "PRRC_kwDOPPTPJM6Ffy7z",
+                  "body": "![high](https://www.gstatic.com/codereviewagent/high-priority.svg)\n\nThe new dependency loading logic is a good improvement for robustness. However, it can fail silently. If dependencies are not loaded by the time the `window.load` event handler executes, an informational message is logged, but the user is left with a blank page and no indication of what went wrong. This can be a poor user experience, especially on slow networks or if a CDN is unavailable.\n\nConsider displaying an error message to the user if dependencies are not loaded after a certain timeout, similar to the pattern in `test-loading-fix.html`.\n\n```suggestion\nfunction checkDependenciesAndLoad() {\n  if (viewerLoaded) return;\n\n  if (\n    typeof marked !== 'undefined' &&\n    typeof hljs !== 'undefined' &&\n    typeof markedHighlight !== 'undefined'\n  ) {\n    console.log('All dependencies loaded, initializing viewer...');\n    loadViewer();\n  } else {\n    console.log('Dependencies status:', {\n      marked: typeof marked !== 'undefined',\n      hljs: typeof hljs !== 'undefined',\n      markedHighlight: typeof markedHighlight !== 'undefined'\n    });\n    // Display an error message to the user\n    document.getElementById('docs').innerHTML = '<div class=\"error\">Failed to load dependencies. Please check your internet connection and try again.</div>';\n  }\n}\n```",
+                  "createdAt": "2025-07-29T12:43:49Z",
+                  "updatedAt": "2025-07-29T12:43:50Z",
+                  "author": {
+                    "login": "gemini-code-assist"
+                  },
+                  "path": "docs-viewer.html",
+                  "originalPosition": 92,
+                  "diffHunk": "@@ -190,31 +181,35 @@\n         console.log('Viewer initialized successfully');\n         }\n         \n-        // Monitor dependency loading\n-        const scripts = document.querySelectorAll('script[src]');\n-        scripts.forEach(script => {\n-            if (script.src.includes('marked') || script.src.includes('highlight')) {\n-                script.addEventListener('load', dependencyLoaded);\n-                script.addEventListener('error', () => {\n-                    console.error('Failed to load dependency:', script.src);\n+        // Check if all dependencies are loaded and load viewer\n+        function checkDependenciesAndLoad() {\n+            if (viewerLoaded) return;\n+            \n+            if (\n+                typeof marked !== 'undefined' &&\n+                typeof hljs !== 'undefined' &&\n+                typeof markedHighlight !== 'undefined'\n+            ) {\n+                console.log('All dependencies loaded, initializing viewer...');\n+                loadViewer();\n+            } else {\n+                console.log('Dependencies status:', {\n+                    marked: typeof marked !== 'undefined',\n+                    hljs: typeof hljs !== 'undefined', \n+                    markedHighlight: typeof markedHighlight !== 'undefined'\n                 });\n             }\n-        });\n+        }\n         \n-        // Fallback if scripts already loaded\n+        // Check dependencies when DOM is ready\n         window.addEventListener('DOMContentLoaded', function() {\n-            setTimeout(() => {\n-                if (\n-                    typeof marked !== 'undefined' &&\n-                    typeof hljs !== 'undefined' &&\n-                    typeof markedHighlight !== 'undefined' &&\n-                    !viewerLoaded\n-                ) {\n-                    if (depsLoaded < 3) {\n-                        loadViewer();\n-                    }\n-                }\n-            }, 100);\n+            // Give scripts time to load\n+            setTimeout(checkDependenciesAndLoad, 100);\n+        });\n+        \n+        // Also check on window load as final fallback\n+        window.addEventListener('load', function() {\n+            setTimeout(checkDependenciesAndLoad, 200);\n         });"
+                },
+                {
+                  "id": "PRRC_kwDOPPTPJM6Ffy77",
+                  "body": "![high](https://www.gstatic.com/codereviewagent/high-priority.svg)\n\nThe new dependency loading logic is a good improvement for robustness. However, it can fail silently. If dependencies are not loaded by the time the `window.load` event handler executes, an informational message is logged, but the user is left with a blank page and no indication of what went wrong. This can be a poor user experience, especially on slow networks or if a CDN is unavailable.\n\nConsider displaying an error message to the user if dependencies are not loaded after a certain timeout, similar to the pattern in `test-loading-fix.html`.\n\n```suggestion\nfunction checkDependenciesAndLoad() {\n  if (viewerLoaded) return;\n\n  if (\n    typeof marked !== 'undefined' &&\n    typeof hljs !== 'undefined' &&\n    typeof markedHighlight !== 'undefined'\n  ) {\n    console.log('All dependencies loaded, initializing viewer...');\n    loadViewer();\n  } else {\n    console.log('Dependencies status:', {\n      marked: typeof marked !== 'undefined',\n      hljs: typeof hljs !== 'undefined',\n      markedHighlight: typeof markedHighlight !== 'undefined'\n    });\n    // Display an error message to the user\n    document.getElementById('docs').innerHTML = '<div class=\"error\">Failed to load dependencies. Please check your internet connection and try again.</div>';\n  }\n}\n```",
+                  "createdAt": "2025-07-29T12:43:50Z",
+                  "updatedAt": "2025-07-29T12:43:50Z",
+                  "author": {
+                    "login": "gemini-code-assist"
+                  },
+                  "path": "docs/index.html",
+                  "originalPosition": 92,
+                  "diffHunk": "@@ -298,31 +289,35 @@\n         console.log('Viewer initialized successfully');\n         }\n         \n-        // Monitor dependency loading\n-        const scripts = document.querySelectorAll('script[src]');\n-        scripts.forEach(script => {\n-            if (script.src.includes('marked') || script.src.includes('highlight')) {\n-                script.addEventListener('load', dependencyLoaded);\n-                script.addEventListener('error', () => {\n-                    console.error('Failed to load dependency:', script.src);\n+        // Check if all dependencies are loaded and load viewer\n+        function checkDependenciesAndLoad() {\n+            if (viewerLoaded) return;\n+            \n+            if (\n+                typeof marked !== 'undefined' &&\n+                typeof hljs !== 'undefined' &&\n+                typeof markedHighlight !== 'undefined'\n+            ) {\n+                console.log('All dependencies loaded, initializing viewer...');\n+                loadViewer();\n+            } else {\n+                console.log('Dependencies status:', {\n+                    marked: typeof marked !== 'undefined',\n+                    hljs: typeof hljs !== 'undefined', \n+                    markedHighlight: typeof markedHighlight !== 'undefined'\n                 });\n             }\n-        });\n+        }\n         \n-        // Fallback if scripts already loaded\n+        // Check dependencies when DOM is ready\n         window.addEventListener('DOMContentLoaded', function() {\n-            setTimeout(() => {\n-                if (\n-                    typeof marked !== 'undefined' &&\n-                    typeof hljs !== 'undefined' &&\n-                    typeof markedHighlight !== 'undefined' &&\n-                    !viewerLoaded\n-                ) {\n-                    if (depsLoaded < 3) {\n-                        loadViewer();\n-                    }\n-                }\n-            }, 100);\n+            // Give scripts time to load\n+            setTimeout(checkDependenciesAndLoad, 100);\n+        });\n+        \n+        // Also check on window load as final fallback\n+        window.addEventListener('load', function() {\n+            setTimeout(checkDependenciesAndLoad, 200);\n         });"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "reviewThreads": {
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "Y3Vyc29yOnYyOpK0MjAyNS0wNy0yOVQxMjo0Mzo1MFrOVf2Keg=="
+        },
+        "nodes": [
+          {
+            "id": "PRRT_kwDOPPTPJM5V_Yp2",
+            "isResolved": false,
+            "isOutdated": false,
+            "comments": {
+              "pageInfo": {
+                "hasNextPage": false,
+                "endCursor": "Y3Vyc29yOnYyOpK0MjAyNS0wNy0yOVQxMjo0Mzo0OVrOhX8u8w=="
+              },
+              "nodes": [
+                {
+                  "id": "PRRC_kwDOPPTPJM6Ffy7z",
+                  "body": "![high](https://www.gstatic.com/codereviewagent/high-priority.svg)\n\nThe new dependency loading logic is a good improvement for robustness. However, it can fail silently. If dependencies are not loaded by the time the `window.load` event handler executes, an informational message is logged, but the user is left with a blank page and no indication of what went wrong. This can be a poor user experience, especially on slow networks or if a CDN is unavailable.\n\nConsider displaying an error message to the user if dependencies are not loaded after a certain timeout, similar to the pattern in `test-loading-fix.html`.\n\n```suggestion\nfunction checkDependenciesAndLoad() {\n  if (viewerLoaded) return;\n\n  if (\n    typeof marked !== 'undefined' &&\n    typeof hljs !== 'undefined' &&\n    typeof markedHighlight !== 'undefined'\n  ) {\n    console.log('All dependencies loaded, initializing viewer...');\n    loadViewer();\n  } else {\n    console.log('Dependencies status:', {\n      marked: typeof marked !== 'undefined',\n      hljs: typeof hljs !== 'undefined',\n      markedHighlight: typeof markedHighlight !== 'undefined'\n    });\n    // Display an error message to the user\n    document.getElementById('docs').innerHTML = '<div class=\"error\">Failed to load dependencies. Please check your internet connection and try again.</div>';\n  }\n}\n```",
+                  "createdAt": "2025-07-29T12:43:49Z",
+                  "updatedAt": "2025-07-29T12:43:50Z",
+                  "author": {
+                    "login": "gemini-code-assist"
+                  },
+                  "path": "docs-viewer.html",
+                  "originalPosition": 92,
+                  "diffHunk": "@@ -190,31 +181,35 @@\n         console.log('Viewer initialized successfully');\n         }\n         \n-        // Monitor dependency loading\n-        const scripts = document.querySelectorAll('script[src]');\n-        scripts.forEach(script => {\n-            if (script.src.includes('marked') || script.src.includes('highlight')) {\n-                script.addEventListener('load', dependencyLoaded);\n-                script.addEventListener('error', () => {\n-                    console.error('Failed to load dependency:', script.src);\n+        // Check if all dependencies are loaded and load viewer\n+        function checkDependenciesAndLoad() {\n+            if (viewerLoaded) return;\n+            \n+            if (\n+                typeof marked !== 'undefined' &&\n+                typeof hljs !== 'undefined' &&\n+                typeof markedHighlight !== 'undefined'\n+            ) {\n+                console.log('All dependencies loaded, initializing viewer...');\n+                loadViewer();\n+            } else {\n+                console.log('Dependencies status:', {\n+                    marked: typeof marked !== 'undefined',\n+                    hljs: typeof hljs !== 'undefined', \n+                    markedHighlight: typeof markedHighlight !== 'undefined'\n                 });\n             }\n-        });\n+        }\n         \n-        // Fallback if scripts already loaded\n+        // Check dependencies when DOM is ready\n         window.addEventListener('DOMContentLoaded', function() {\n-            setTimeout(() => {\n-                if (\n-                    typeof marked !== 'undefined' &&\n-                    typeof hljs !== 'undefined' &&\n-                    typeof markedHighlight !== 'undefined' &&\n-                    !viewerLoaded\n-                ) {\n-                    if (depsLoaded < 3) {\n-                        loadViewer();\n-                    }\n-                }\n-            }, 100);\n+            // Give scripts time to load\n+            setTimeout(checkDependenciesAndLoad, 100);\n+        });\n+        \n+        // Also check on window load as final fallback\n+        window.addEventListener('load', function() {\n+            setTimeout(checkDependenciesAndLoad, 200);\n         });"
+                }
+              ]
+            }
+          },
+          {
+            "id": "PRRT_kwDOPPTPJM5V_Yp6",
+            "isResolved": false,
+            "isOutdated": false,
+            "comments": {
+              "pageInfo": {
+                "hasNextPage": false,
+                "endCursor": "Y3Vyc29yOnYyOpK0MjAyNS0wNy0yOVQxMjo0Mzo1MFrOhX8u-w=="
+              },
+              "nodes": [
+                {
+                  "id": "PRRC_kwDOPPTPJM6Ffy77",
+                  "body": "![high](https://www.gstatic.com/codereviewagent/high-priority.svg)\n\nThe new dependency loading logic is a good improvement for robustness. However, it can fail silently. If dependencies are not loaded by the time the `window.load` event handler executes, an informational message is logged, but the user is left with a blank page and no indication of what went wrong. This can be a poor user experience, especially on slow networks or if a CDN is unavailable.\n\nConsider displaying an error message to the user if dependencies are not loaded after a certain timeout, similar to the pattern in `test-loading-fix.html`.\n\n```suggestion\nfunction checkDependenciesAndLoad() {\n  if (viewerLoaded) return;\n\n  if (\n    typeof marked !== 'undefined' &&\n    typeof hljs !== 'undefined' &&\n    typeof markedHighlight !== 'undefined'\n  ) {\n    console.log('All dependencies loaded, initializing viewer...');\n    loadViewer();\n  } else {\n    console.log('Dependencies status:', {\n      marked: typeof marked !== 'undefined',\n      hljs: typeof hljs !== 'undefined',\n      markedHighlight: typeof markedHighlight !== 'undefined'\n    });\n    // Display an error message to the user\n    document.getElementById('docs').innerHTML = '<div class=\"error\">Failed to load dependencies. Please check your internet connection and try again.</div>';\n  }\n}\n```",
+                  "createdAt": "2025-07-29T12:43:50Z",
+                  "updatedAt": "2025-07-29T12:43:50Z",
+                  "author": {
+                    "login": "gemini-code-assist"
+                  },
+                  "path": "docs/index.html",
+                  "originalPosition": 92,
+                  "diffHunk": "@@ -298,31 +289,35 @@\n         console.log('Viewer initialized successfully');\n         }\n         \n-        // Monitor dependency loading\n-        const scripts = document.querySelectorAll('script[src]');\n-        scripts.forEach(script => {\n-            if (script.src.includes('marked') || script.src.includes('highlight')) {\n-                script.addEventListener('load', dependencyLoaded);\n-                script.addEventListener('error', () => {\n-                    console.error('Failed to load dependency:', script.src);\n+        // Check if all dependencies are loaded and load viewer\n+        function checkDependenciesAndLoad() {\n+            if (viewerLoaded) return;\n+            \n+            if (\n+                typeof marked !== 'undefined' &&\n+                typeof hljs !== 'undefined' &&\n+                typeof markedHighlight !== 'undefined'\n+            ) {\n+                console.log('All dependencies loaded, initializing viewer...');\n+                loadViewer();\n+            } else {\n+                console.log('Dependencies status:', {\n+                    marked: typeof marked !== 'undefined',\n+                    hljs: typeof hljs !== 'undefined', \n+                    markedHighlight: typeof markedHighlight !== 'undefined'\n                 });\n             }\n-        });\n+        }\n         \n-        // Fallback if scripts already loaded\n+        // Check dependencies when DOM is ready\n         window.addEventListener('DOMContentLoaded', function() {\n-            setTimeout(() => {\n-                if (\n-                    typeof marked !== 'undefined' &&\n-                    typeof hljs !== 'undefined' &&\n-                    typeof markedHighlight !== 'undefined' &&\n-                    !viewerLoaded\n-                ) {\n-                    if (depsLoaded < 3) {\n-                        loadViewer();\n-                    }\n-                }\n-            }, 100);\n+            // Give scripts time to load\n+            setTimeout(checkDependenciesAndLoad, 100);\n+        });\n+        \n+        // Also check on window load as final fallback\n+        window.addEventListener('load', function() {\n+            setTimeout(checkDependenciesAndLoad, 200);\n         });"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "comments": {
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": null
+        },
+        "nodes": []
+      }
+    }
+  }
+}
