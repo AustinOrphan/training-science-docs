@@ -188,13 +188,13 @@
         const viewer = createViewer({
             container: '#docs',
             title: 'Training Science Documentation',
-            theme: 'default-light', // Use full theme name with mode
-            themeConfig: {
+            theme: {
+                ...themes.default.light,
                 switcherPosition: 'header',
                 darkTogglePosition: 'header',
                 showPreview: true,
                 showDescription: false,
-                allowCustomThemes: false,
+                allowCustomThemes: true,
                 enablePersistence: true,
                 storageKey: 'training-docs-theme'
             },
