@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug - Training Science Documentation</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        #docs {
+            height: 100vh;
+        }
+        #debug-panel {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #1a1a1a;
+            color: #0f0;
+            font-family: monospace;
+            font-size: 12px;
+            padding: 10px;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 10000;
+        }
+        .debug-line {
+            margin: 2px 0;
+        }
+        .debug-error { color: #f00; }
+        .debug-warn { color: #ff0; }
+        .debug-success { color: #0f0; }
+        .debug-info { color: #0ff; }
+    </style>
+    
+    <!-- Dependencies for UMD build -->
+    <script src="https://cdn.jsdelivr.net/npm/marked@14.1.2/lib/marked.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked-highlight@2.1.4/lib/index.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.10.0/lib/highlight.min.js"></script>
+</head>
+<body>
+    <div id="docs"></div>
+    <div id="debug-panel"></div>
+    
+    <script>
+        // Store original console methods before any overrides
+        const originalConsole = {
+            log: console.log,
+            warn: console.warn,
+            error: console.error
+        };
+
+        // Debug logging - use original console to avoid recursion
+        const debugLog = (message, type = 'info') => {
+            const panel = document.getElementById('debug-panel');
+            const line = document.createElement('div');
+            line.className = `debug-line debug-${type}`;
+            line.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            panel.appendChild(line);
+            panel.scrollTop = panel.scrollHeight;
+            // Use original console.log to avoid recursion
+            originalConsole.log(`[DEBUG ${type}]`, message);
+        };
+
+        // Override console methods to capture all logs
+        console.log = (...args) => {
+            debugLog('LOG: ' + args.join(' '), 'info');
+            originalConsole.log(...args);
+        };
+        
+        console.warn = (...args) => {
+            debugLog('WARN: ' + args.join(' '), 'warn');
+            originalConsole.warn(...args);
+        };
+        
+        console.error = (...args) => {
+            debugLog('ERROR: ' + args.join(' '), 'error');
+            originalConsole.error(...args);
+        };
+
+        debugLog('Starting debug session...', 'info');
+        
+        // Check dependencies
+        debugLog('Checking dependencies...', 'info');
+        
+        if (typeof marked !== 'undefined') {
+            debugLog('✓ marked loaded: ' + (marked.VERSION || 'version unknown'), 'success');
+        } else {
+            debugLog('✗ marked NOT loaded', 'error');
+        }
+        
+        if (typeof markedHighlight !== 'undefined') {
+            debugLog('✓ markedHighlight loaded', 'success');
+        } else {
+            debugLog('✗ markedHighlight NOT loaded', 'error');
+        }
+        
+        if (typeof hljs !== 'undefined') {
+            debugLog('✓ hljs loaded: ' + (hljs.versionString || 'version unknown'), 'success');
+            debugLog('  hljs languages: ' + Object.keys(hljs.listLanguages ? hljs.listLanguages() : {}).length, 'info');
+        } else {
+            debugLog('✗ hljs NOT loaded', 'error');
+        }
+        
+        // Clear old localStorage
+        debugLog('Checking localStorage...', 'info');
+        const oldTheme = localStorage.getItem('training-docs-theme');
+        if (oldTheme) {
+            debugLog('Found old theme in localStorage: ' + oldTheme, 'warn');
+            localStorage.removeItem('training-docs-theme');
+            debugLog('Cleared old theme from localStorage', 'success');
+        }
+        
+        // Wait for all scripts to load
+        window.addEventListener('load', () => {
+            debugLog('Window loaded, loading viewer...', 'info');
+            
+            // Load viewer
+            const script = document.createElement('script');
+            script.src = './viewer/dist/index.umd.cjs';
+            script.onload = () => {
+                debugLog('Viewer script loaded', 'success');
+                
+                // Ensure hljs is available globally
+                if (typeof hljs !== 'undefined' && !window.hljs) {
+                    window.hljs = hljs;
+                    debugLog('Set window.hljs = hljs', 'success');
+                }
+                
+                // Check viewer availability
+                if (typeof MarkdownDocsViewer !== 'undefined') {
+                    debugLog('✓ MarkdownDocsViewer available', 'success');
+                    const keys = Object.keys(MarkdownDocsViewer);
+                    debugLog('  Available exports: ' + keys.join(', '), 'info');
+                    
+                    try {
+                        const { createViewer, themes } = MarkdownDocsViewer;
+                        
+                        debugLog('Creating viewer instance...', 'info');
+                        
+                        // Add highlight.js to marked
+                        if (typeof marked !== 'undefined' && typeof markedHighlight !== 'undefined' && typeof hljs !== 'undefined') {
+                            marked.use(markedHighlight.markedHighlight({
+                                langPrefix: 'hljs language-',
+                                highlight(code, lang) {
+                                    const language = hljs.getLanguage(lang) ? lang : 'plaintext';
+                                    return hljs.highlight(code, { language }).value;
+                                }
+                            }));
+                            debugLog('Configured marked with highlight.js', 'success');
+                        }
+                        
+                        const viewer = createViewer({
+                            container: '#docs',
+                            title: 'Debug - Training Science Documentation',
+                            theme: {
+                                name: 'default',
+                                switcherPosition: 'header',
+                                darkTogglePosition: 'header',
+                                showPreview: true,
+                                showDescription: false,
+                                allowCustomThemes: false,
+                                enablePersistence: true,
+                                storageKey: 'training-docs-theme-debug'
+                            },
+                            source: {
+                                type: 'local',
+                                basePath: '.',
+                                documents: [
+                                    {
+                                        id: 'test',
+                                        title: 'Test Document',
+                                        file: 'README.md',
+                                        category: 'Test',
+                                        description: 'Testing highlight.js',
+                                        order: 1
+                                    }
+                                ]
+                            },
+                            navigation: {
+                                showCategories: true,
+                                collapsible: true
+                            },
+                            search: {
+                                enabled: true,
+                                placeholder: 'Search...'
+                            },
+                            render: {
+                                syntaxHighlighting: true,
+                                highlightTheme: 'github',
+                                copyCodeButton: true
+                            }
+                        });
+                        
+                        debugLog('✓ Viewer created successfully', 'success');
+                        
+                        // Check viewer internals
+                        if (viewer.themeManager) {
+                            const themes = viewer.themeManager.getThemes();
+                            debugLog('Available themes: ' + Object.keys(themes).join(', '), 'info');
+                        }
+                        
+                    } catch (error) {
+                        debugLog('Failed to create viewer: ' + error.message, 'error');
+                        debugLog('Stack: ' + error.stack, 'error');
+                    }
+                } else {
+                    debugLog('✗ MarkdownDocsViewer NOT available', 'error');
+                }
+            };
+            
+            script.onerror = () => {
+                debugLog('Failed to load viewer script', 'error');
+            };
+            
+            document.body.appendChild(script);
+        });
+    </script>
+</body>
+</html>
