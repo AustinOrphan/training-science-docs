@@ -92,18 +92,15 @@
         const MAX_LOAD_TIMEOUT = 10000; // 10 seconds
         const RETRY_DELAY = 1000; // 1 second between retries
         
-        // Detect environment
-        const isProduction = window.location.pathname.includes('/docs/');
-        const isDevelopment = !isProduction;
+        // Configure viewer path - works from both root and /docs/
+        const viewerPath = window.location.pathname.includes('/docs/') 
+            ? '../viewer/dist/index.umd.cjs' 
+            : './viewer/dist/index.umd.cjs';
         
-        // Configure paths based on environment
-        const viewerPath = isProduction ? '../viewer/dist/index.umd.cjs' : './viewer/dist/index.umd.cjs';
-        const documentSource = isProduction ? {
+        // Always use GitHub raw URLs for content
+        const documentSource = {
             type: 'url',
             baseUrl: 'https://raw.githubusercontent.com/AustinOrphan/training-science-docs/main'
-        } : {
-            type: 'local',
-            basePath: '.'
         };
         
         // State tracking
@@ -198,8 +195,8 @@
             
             const { createViewer, themes } = window.MarkdownDocsViewer || MarkdownDocsViewer;
 
-            // Core documents list (shared between dev and prod)
-            const coreDocuments = [
+            // All documents
+            const documents = [
                 // Introduction
                 {
                     id: 'overview',
@@ -257,11 +254,7 @@
                     category: 'Core Documents',
                     description: 'Full list of 40+ sources and citations',
                     order: 5
-                }
-            ];
-            
-            // Additional documents for production only
-            const productionDocuments = [
+                },
                 // Planning & Implementation
                 {
                     id: 'impl-roadmap',
@@ -388,7 +381,7 @@
                 },
                 source: {
                     ...documentSource,
-                    documents: isProduction ? [...coreDocuments, ...productionDocuments] : coreDocuments
+                    documents: documents
                 },
                 navigation: {
                     showCategories: true,
@@ -432,7 +425,7 @@
                 }
             });
             
-            console.log(`Viewer initialized successfully in ${isProduction ? 'production' : 'development'} mode`);
+            console.log('Viewer initialized successfully');
         }
         
         // Check if all dependencies are loaded and load viewer

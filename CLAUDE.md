@@ -10,7 +10,7 @@ This is a static documentation site for training science research containing 40+
 
 ### Local Development
 - `python3 -m http.server 8000` - Serve locally for testing (from root directory)
-- Open `http://localhost:8000/` - Unified viewer auto-detects environment
+- Open `http://localhost:8000/` - View documentation locally (still loads content from GitHub)
 
 ### Viewer Library Development (if working on /viewer submodule)
 - `cd viewer && npm run dev` - Start Vite development server on port 5000
@@ -37,17 +37,16 @@ This repository follows a simplified static site pattern:
 - **Content delivery**: GitHub raw URLs serve content to live viewer
 
 ### Deployment Architecture  
-- **Unified viewer**: `/index.html` (auto-detects dev/prod environment)
-  - Development mode: Uses local files via `type: 'local'`
-  - Production mode: Uses GitHub raw URLs via `type: 'url'`
+- **Single viewer**: `/index.html` serves all documentation
+- **Always GitHub content**: Uses GitHub raw URLs for all document loading
 - **Git submodule**: `/viewer/` contains the viewer library source
-- **Direct loading**: Both environments load viewer from `viewer/dist/index.umd.cjs`
+- **Direct loading**: Viewer loads from `viewer/dist/index.umd.cjs` (adjusts path based on URL)
 - **Legacy redirects**: Old URLs (`/docs-viewer.html`, `/docs/index.html`) redirect to `/index.html`
 
 ### Development Model
-1. **Content development**: Edit markdown files in root, changes auto-deploy
+1. **Content development**: Edit markdown files in root, push to GitHub to see changes
 2. **Viewer development**: Work in `/viewer/` submodule, build creates `dist/index.umd.cjs`
-3. **No manual copying**: Viewer is loaded directly from submodule build output
+3. **No environment switching**: All content always comes from GitHub
 
 ### Folder Organization
 - **`planning/`**: Project management files (roadmaps, guides, trackers, specifications)
@@ -172,7 +171,7 @@ This documentation follows academic standards:
 ## Common Pitfalls
 
 1. **Don't assume CDN packages exist** - The markdown-docs-viewer isn't published to npm despite the README suggesting it
-2. **Path detection**: The unified viewer auto-detects environment based on URL path
+2. **Content always from GitHub**: Even local development loads content from GitHub raw URLs
 3. **Dependency loading order**: highlight.js must load before the viewer for proper detection
-4. **Local vs live paths**: Development uses `type: 'local'`, production uses `type: 'url'` with GitHub raw URLs
+4. **Push to see changes**: Must push markdown changes to GitHub to see them (no local file serving)
 5. **Academic rigor**: All content changes must maintain scientific accuracy and include proper citations
