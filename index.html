@@ -92,10 +92,8 @@
         const MAX_LOAD_TIMEOUT = 10000; // 10 seconds
         const RETRY_DELAY = 1000; // 1 second between retries
         
-        // Configure viewer path - works from both root and /docs/
-        const viewerPath = window.location.pathname.includes('/docs/') 
-            ? '../viewer/dist/markdown-docs-viewer.umd.cjs' 
-            : './viewer/dist/markdown-docs-viewer.umd.cjs';
+        // Configure viewer path - use copied file for GitHub Pages deployment
+        const viewerPath = './markdown-docs-viewer.umd.cjs';
         
         // Always use local files - they're in the same repo!
         const documentSource = {
