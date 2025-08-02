@@ -1,0 +1,92 @@
+name: Deploy Viewer
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'viewer/**'
+      - '.github/workflows/deploy-viewer.yml'
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository with submodules
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: 'viewer/package-lock.json'
+      
+      - name: Install dependencies
+        run: |
+          cd viewer
+          npm ci
+      
+      - name: Build viewer
+        run: |
+          cd viewer
+          npm run build
+      
+      - name: Copy viewer to root
+        run: |
+          cp viewer/dist/markdown-docs-viewer.umd.cjs ./markdown-docs-viewer.umd.cjs
+      
+      - name: Check if viewer file changed
+        id: check_changes
+        run: |
+          git add markdown-docs-viewer.umd.cjs
+          if git diff --cached --quiet; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+            echo "No changes detected in viewer file"
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+            echo "Changes detected in viewer file"
+          fi
+      
+      - name: Create branch and commit changes
+        if: steps.check_changes.outputs.changed == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          BRANCH_NAME="update-viewer-${{ github.run_number }}"
+          git checkout -b "$BRANCH_NAME"
+          git commit -m "chore: update viewer build from submodule"
+          git push origin "$BRANCH_NAME"
+      
+      - name: Create Pull Request
+        if: steps.check_changes.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr create \
+            --title "chore: update viewer build from submodule" \
+            --body "$(cat <<'EOF'
+          ## Automated Viewer Update
+          
+          This PR updates the viewer build file from the latest submodule changes.
+          
+          ### Changes
+          - Updated `markdown-docs-viewer.umd.cjs` from viewer submodule build
+          
+          ### Source
+          Built from viewer submodule at commit: ${{ github.sha }}
+          
+          ---
+          *This PR was automatically created by the deploy-viewer workflow.*
+          EOF
+          )" \
+            --base main \
+            --head "update-viewer-${{ github.run_number }}" \
+            --label "automated" \
+            --label "dependencies" \
+            --label "viewer-update"

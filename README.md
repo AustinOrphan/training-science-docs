@@ -97,6 +97,36 @@ Advanced Running Training Plan Generation: Scientific Foundation.
 https://github.com/yourusername/training-science-docs
 ```
 
+## Development
+
+### Viewer Library Updates
+
+The documentation viewer is maintained as a git submodule. Updates are automatically deployed via GitHub Actions when changes are pushed to the viewer submodule.
+
+#### Automated Updates (GitHub Actions)
+The viewer build process creates a Pull Request when:
+- Changes are pushed to the `viewer/` submodule
+- The workflow is manually triggered
+
+The PR will contain the updated viewer build file for review before merging.
+
+#### Manual Updates (Local Development)
+```bash
+# Quick update - install, build, and copy
+npm run update-viewer
+
+# Or step by step:
+npm run viewer:install  # Install viewer dependencies
+npm run viewer:build    # Build the viewer
+npm run viewer:copy     # Copy to root directory
+```
+
+### Local Development
+```bash
+# Serve the documentation locally
+npm run dev  # Opens on http://localhost:8000
+```
+
 ## Updates
 
 This is a living document collection. Updates are made as new research becomes available and methodologies evolve.

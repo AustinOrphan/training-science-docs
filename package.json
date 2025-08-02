@@ -6,7 +6,12 @@
   "main": "index.html",
   "scripts": {
     "serve": "python3 -m http.server 8000",
-    "dev": "python3 -m http.server 8000"
+    "dev": "python3 -m http.server 8000",
+    "update-viewer": "npm run viewer:install && npm run viewer:build && npm run viewer:copy && echo 'Viewer updated successfully!'",
+    "build-viewer": "npm run viewer:build && npm run viewer:copy",
+    "viewer:install": "npm install --prefix viewer",
+    "viewer:build": "npm run build --prefix viewer",
+    "viewer:copy": "cp viewer/dist/markdown-docs-viewer.umd.cjs ./markdown-docs-viewer.umd.cjs"
   },
   "files": [
     "*.md",
