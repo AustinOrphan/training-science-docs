@@ -14,9 +14,10 @@ This is a static documentation site for training science research containing 40+
 
 ### Viewer Library Development (if working on /viewer submodule)
 - `cd viewer && npm run dev` - Start Vite development server on port 5000
-- `cd viewer && npm run build` - Build library (creates `dist/index.umd.cjs`)
+- `cd viewer && npm run build` - Build library (creates `dist/markdown-docs-viewer.umd.cjs`)
 - `cd viewer && npm test` - Run all tests
 - `cd viewer && npm run lint` - Lint TypeScript files
+- **After building**: Copy `viewer/dist/markdown-docs-viewer.umd.cjs` to root for GitHub Pages deployment
 
 ### Content Management
 All markdown files are in the repository root and automatically served via GitHub raw URLs to the live documentation viewer.
@@ -40,8 +41,9 @@ This repository follows a simplified static site pattern:
 - **Single viewer**: `/index.html` serves all documentation
 - **Always local files**: Uses relative paths to markdown files (they're in the same repo!)
 - **Git submodule**: `/viewer/` contains the viewer library source
-- **Direct loading**: Viewer loads from `viewer/dist/markdown-docs-viewer.umd.cjs` (adjusts path based on URL)
+- **Direct loading**: Viewer loads from `markdown-docs-viewer.umd.cjs` (copied to root for GitHub Pages)
 - **Legacy redirects**: Old URLs (`/docs-viewer.html`, `/docs/index.html`) redirect to `/index.html`
+- **GitHub Pages**: Requires copying viewer build to root since submodules aren't deployed
 
 ### Development Model
 1. **Content development**: Edit markdown files, changes visible immediately (local) or after push (production)
