@@ -40,12 +40,12 @@ This repository follows a simplified static site pattern:
 - **Single viewer**: `/index.html` serves all documentation
 - **Always local files**: Uses relative paths to markdown files (they're in the same repo!)
 - **Git submodule**: `/viewer/` contains the viewer library source
-- **Direct loading**: Viewer loads from `viewer/dist/index.umd.cjs` (adjusts path based on URL)
+- **Direct loading**: Viewer loads from `viewer/dist/markdown-docs-viewer.umd.cjs` (adjusts path based on URL)
 - **Legacy redirects**: Old URLs (`/docs-viewer.html`, `/docs/index.html`) redirect to `/index.html`
 
 ### Development Model
 1. **Content development**: Edit markdown files, changes visible immediately (local) or after push (production)
-2. **Viewer development**: Work in `/viewer/` submodule, build creates `dist/index.umd.cjs`
+2. **Viewer development**: Work in `/viewer/` submodule, build creates `dist/markdown-docs-viewer.umd.cjs`
 3. **No network dependencies**: All files served from the same repository
 
 ### Folder Organization
@@ -120,6 +120,24 @@ When using the markdown-docs-viewer UMD build:
 2. **Dependencies**: Load marked, marked-highlight, and highlight.js from CDN before the viewer
 3. **Highlight.js fix**: Ensure `window.hljs = hljs` for proper dependency detection
 4. **Document source**: Use GitHub raw URLs for reliable document loading
+
+## Recent Updates (August 2025)
+
+### New Features Enabled
+- **Advanced Search**: Enhanced search with fuzzy matching, search history, and category filters
+- **Export Functionality**: Users can now export documents as PDF or HTML with proper formatting
+- **Table of Contents**: Auto-generated TOC with scroll spy for improved navigation
+- **Professional Themes**: Upgraded to Material Design theme by default with 11+ theme options
+- **Performance Optimizations**: LRU caching, lazy loading, and prefetch capabilities enabled
+- **Print-Friendly Styles**: Optimized printing experience for academic documents
+- **Enhanced Mobile Support**: Full-screen search and improved responsive features
+
+### Configuration Updates
+- Updated to use `markdown-docs-viewer.umd.cjs` (corrected filename)
+- Enabled comprehensive search configuration with 15 max results and debouncing
+- Added PDF export with A4 format and proper headers/footers
+- Configured performance caching with 1-hour TTL and 50-item capacity
+- Enhanced mobile search with recent searches and full-screen mode
 
 ## Known Issues
 

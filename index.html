@@ -94,8 +94,8 @@
         
         // Configure viewer path - works from both root and /docs/
         const viewerPath = window.location.pathname.includes('/docs/') 
-            ? '../viewer/dist/index.umd.cjs' 
-            : './viewer/dist/index.umd.cjs';
+            ? '../viewer/dist/markdown-docs-viewer.umd.cjs' 
+            : './viewer/dist/markdown-docs-viewer.umd.cjs';
         
         // Always use local files - they're in the same repo!
         const documentSource = {
@@ -377,7 +377,7 @@
                 container: '#docs',
                 title: 'Training Science Documentation',
                 theme: {
-                    ...themes.default.light,
+                    ...themes.material.light,
                     switcherPosition: 'header',
                     darkTogglePosition: 'header',
                     showPreview: true,
@@ -401,7 +401,16 @@
                     enabled: true,
                     placeholder: 'Search training science docs...',
                     searchInTags: true,
-                    maxResults: 10
+                    maxResults: 15,
+                    fuzzySearch: true,
+                    searchHistory: true,
+                    filters: {
+                        category: true,
+                        author: false,
+                        date: false
+                    },
+                    highlightResults: true,
+                    debounceMs: 300
                 },
                 render: {
                     syntaxHighlighting: true,
@@ -409,7 +418,53 @@
                     copyCodeButton: true,
                     linkTarget: '_blank'
                 },
-                // Mobile configuration
+                // Table of Contents configuration
+                toc: {
+                    enabled: true,
+                    position: 'sidebar',
+                    scrollSpy: true,
+                    collapsible: true,
+                    showNumbers: false,
+                    maxDepth: 4,
+                    smoothScroll: true
+                },
+                // Export functionality 
+                export: {
+                    enabled: true,
+                    formats: ['pdf', 'html'],
+                    includeStyles: true,
+                    includeToc: true,
+                    pdfOptions: {
+                        format: 'a4',
+                        margin: '20mm',
+                        printBackground: true,
+                        displayHeaderFooter: true,
+                        headerTemplate: '<div style="font-size: 10px; text-align: center; width: 100%;">Training Science Documentation</div>',
+                        footerTemplate: '<div style="font-size: 10px; text-align: center; width: 100%;"><span class="pageNumber"></span></div>'
+                    }
+                },
+                // Performance optimizations
+                performance: {
+                    lazyLoading: true,
+                    caching: {
+                        enabled: true,
+                        strategy: 'lru',
+                        maxSize: 50,
+                        ttl: 3600000 // 1 hour
+                    },
+                    prefetchLinks: true,
+                    debounceSearch: 300
+                },
+                // Print-friendly styles
+                print: {
+                    enabled: true,
+                    optimizeForPrint: true,
+                    includeBackgroundColors: false,
+                    pageBreaks: 'auto',
+                    fontSize: '12pt',
+                    margins: '20mm'
+                },
+                // Mobile configuration (enhanced)
                 responsive: true,
                 mobile: {
                     enabled: true,
@@ -429,6 +484,10 @@
                             sm: 15,
                             md: 16
                         }
+                    },
+                    search: {
+                        fullScreen: true,
+                        showRecentSearches: true
                     }
                 }
             });
